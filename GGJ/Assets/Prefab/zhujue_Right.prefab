@@ -121,8 +121,8 @@ GameObject:
   - component: {fileID: 5460099263247494971}
   - component: {fileID: 5460099263247494970}
   m_Layer: 0
-  m_Name: zhujue_temp (1)
-  m_TagString: Untagged
+  m_Name: zhujue_Right
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
