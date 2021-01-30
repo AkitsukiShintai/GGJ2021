@@ -24,6 +24,8 @@ public class Monster : MonoBehaviour
 
     public MonsterConfig cfg;
     private MonsterStatus status;
+    private float getStarTime;
+    private Star star;
 
 
     private void Awake()
@@ -40,6 +42,10 @@ public class Monster : MonoBehaviour
     // public方法设置MonsterStatus, Update检查并更新动画机的状态
     void Update()
     {
+        if (CheckVomit())
+        {
+            VomitStar();  // 吐星星
+        }
 
     }
 
@@ -57,20 +63,39 @@ public class Monster : MonoBehaviour
     {
         star.EatStar(gameObject);
         // 扣除狂暴值
+        ReduceRage(2.0f);
         // 记录time，等待吐出
+        getStarTime = Time.time;
     }
 
-    void VomitStar(Star star)
+
+    void VomitStar()
     {
         Vector3 pos = GetStarDropPos();
         star.VomitStar(pos);  // 吐出星星，告诉星星往哪里飞
-
+        star = null;
     }
     
     Vector3 GetStarDropPos()
     {
         return gameObject.transform.position;
     }
+
+    bool CheckVomit()
+    {
+        return star != null && getStarTime - Time.time > cfg.holdStarTime;
+    }
+
+
+    void ReduceRage(float dec)
+    {
+        status.rage -= dec;
+        if (CheckDeath())
+        {
+            Dead();
+        }
+    }
+
 
     bool CheckDeath()
     {

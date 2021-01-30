@@ -27,5 +27,8 @@ namespace Assets.Script
 
         [Tooltip("跑步速度")]
         public float runSpeed;
+
+        [Tooltip("星星停留时间")]
+        public float holdStarTime;
     }
 }
