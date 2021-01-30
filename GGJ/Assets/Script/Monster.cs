@@ -1,5 +1,6 @@
 ﻿using Assets.Script;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public enum MonsterAttackType {IDLE, COMMON, DASH, RANGE};
 
@@ -16,21 +17,26 @@ public class MonsterStatus {
     public float rage;
     public MonsterAttackType attackType = MonsterAttackType.IDLE;
     public MonsterMoveType moveType = MonsterMoveType.IDLE;
+    public Vector3 moveDir;
 }
 
 
-public class Monster : MonoBehaviour
-{
+public class Monster : MonoBehaviour {
 
     public MonsterConfig cfg;
-    private MonsterStatus status;
+    public MonsterStatus status;
     private float getStarTime;
     private Star star;
+    private Animator animatior;
+    public MonsterMoveType type;
+    public Vector3 target;
+    private float turnPercent = 5f;
 
 
     private void Awake()
     {
-        status = new MonsterStatus(cfg.initRage); 
+        status = new MonsterStatus(cfg.initRage);
+        //animatior = gameObject.GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -43,13 +49,49 @@ public class Monster : MonoBehaviour
     void Update()
     {
         if (CheckVomit()) VomitStar();  // 吐星星
-
+       
     }
+
+    void FixedUpdate()
+    {
+        status.moveType = type;
+        status.moveDir = target;
+        Move();
+    }
+
+    void Move()
+    {
+        status.moveDir = Vector3.Slerp(transform.forward, status.moveDir, Time.deltaTime * turnPercent);
+        transform.rotation = Quaternion.LookRotation(status.moveDir);
+
+        if (status.moveType != MonsterMoveType.IDLE)
+        {
+            transform.position += Vector3.Dot(status.moveDir, Vector3.right) * Vector3.right * GetSpeed() * Time.deltaTime;
+        }
+    }
+
+
+    public float GetSpeed()
+    {
+        float speed;
+        if (status.moveType == MonsterMoveType.RUN)
+        {
+            speed = cfg.runSpeed;
+        }
+        else
+        {
+            speed = cfg.walkSpeed;
+        }
+        return speed;
+    }
+
 
     public void MoveTo(Vector3 target, MonsterMoveType type)
     {
-
+        status.moveType = type;
+        status.moveDir = target;
     }
+
 
     public void AttackBy(MonsterAttackType type)
     {
