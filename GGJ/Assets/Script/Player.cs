@@ -55,9 +55,18 @@ public class Player : MonoBehaviour
         }
     }
 
+    public Star testStar;
     private List<Star> m_Stars;
 
     private float m_RageValue;
+
+    public float rageValue
+    {
+        get
+        {
+            return m_RageValue;
+        }
+    }
 
     private void Awake()
     {
@@ -75,7 +84,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        m_RageValue = playerData ? playerData.rage : 0;
+        m_RageValue = 0;
     }
 
     private void Update()
@@ -84,15 +93,20 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        if (m_Raging && m_Stars[0])
+        if (m_Raging && m_HaveStar)
         {
             //狂暴且有星星，降低狂暴值
-            m_RageValue = Mathf.Clamp(m_RageValue - Time.deltaTime * playerData.rageDescentRate, 0, playerData.rageMax);
+            m_RageValue = Mathf.Clamp(m_RageValue - Time.deltaTime * playerData.rageDescentRate, 0, playerData.rage);
             TryStopRaging();
         }
         else
         {
             TryRage();
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            VomitStar(false);
         }
     }
 
@@ -168,7 +182,7 @@ public class Player : MonoBehaviour
         //调用回调，LoseStar之后星星和对象的关系已经确定
         if (vomitStarEvents != null)
         {
-            vomitStarEvents.Invoke(this, m_Stars[0]);
+            vomitStarEvents.Invoke(this, star);
         }
     }
 
@@ -183,8 +197,17 @@ public class Player : MonoBehaviour
 
     private void TryRage()
     {
-        if (!ShouldRage() || m_Raging)
+        if (!ShouldRage())
         {
+            return;
+        }
+
+        if (m_Raging)
+        {
+            if (m_RageValue >= playerData.rageMax)
+            {
+                GetComponent<PlayerMove>().Die();
+            }
             return;
         }
         //TODO:变大， 无法控制
@@ -206,6 +229,15 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Star"))
+        {
+            EatStar(other.gameObject.GetComponent<Star>());
+            Debug.Log(gameObject.name + "吃星星拉~");
+        }
+    }
+
+    private void OnColliderEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Star"))
         {

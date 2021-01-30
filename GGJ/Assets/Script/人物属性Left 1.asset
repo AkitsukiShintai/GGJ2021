@@ -15,7 +15,7 @@ MonoBehaviour:
   rage: 0
   rageDescentRate: 1
   rageMax: 10
-  moveSpeed: 1
+  moveSpeed: 2
   jump: 4
   amplification: 3
   vision: 0

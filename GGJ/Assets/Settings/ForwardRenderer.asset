@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ForwardRenderer
   m_EditorClassIdentifier: 
   m_RendererFeatures:
-  - {fileID: 3141182509089058791}
-  m_RendererFeatureMap: e76fec6cd9b8972b
+  - {fileID: 2079884689282654605}
+  m_RendererFeatureMap: 8d6177ee1a3cdd1c
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   shaders:
     blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
@@ -25,10 +25,10 @@ MonoBehaviour:
     fallbackErrorPS: {fileID: 4800000, guid: e6e9a19c3678ded42a3bc431ebef7dbd, type: 3}
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   m_TransparentLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   m_DefaultStencilState:
     overrideStencilState: 0
     stencilReference: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
---- !u!114 &3141182509089058791
+--- !u!114 &2079884689282654605
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49,4 +49,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 100a62de3481dc5488a9f5f20b968563, type: 3}
   m_Name: NewShadowingMaskRenderPassFeature
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1

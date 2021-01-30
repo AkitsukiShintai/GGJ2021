@@ -11,6 +11,8 @@
         Pass
         {
             Blend SrcAlpha OneMinusSrcAlpha
+            ZTest Off
+            ZWrite Off
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -29,6 +31,7 @@
                 float4 vertex : SV_POSITION;
             };
 
+            sampler2D _BackgroundRT;
             sampler2D _ForgroundMask;
             CBUFFER_START(UnityPerMaterial)
                 float4 _ForgroundMask_ST;
@@ -45,7 +48,8 @@
             half4 frag (v2f i) : SV_Target
             {
                 half4 col = tex2D(_ForgroundMask, i.uv);
-                return half4(0, 0, 0, 1.0 - col.r);
+                half4 bg = tex2D(_BackgroundRT, i.uv);
+                return half4(bg.rgb * 0.3, 1.0 - col.r);
             }
             ENDHLSL
         }
