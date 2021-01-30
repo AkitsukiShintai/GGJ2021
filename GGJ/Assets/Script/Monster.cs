@@ -42,10 +42,7 @@ public class Monster : MonoBehaviour
     // public方法设置MonsterStatus, Update检查并更新动画机的状态
     void Update()
     {
-        if (CheckVomit())
-        {
-            VomitStar();  // 吐星星
-        }
+        if (CheckVomit()) VomitStar();  // 吐星星
 
     }
 
@@ -90,10 +87,7 @@ public class Monster : MonoBehaviour
     void ReduceRage(float dec)
     {
         status.rage -= dec;
-        if (CheckDeath())
-        {
-            Dead();
-        }
+        if (CheckDeath()) Dead();
     }
 
 
