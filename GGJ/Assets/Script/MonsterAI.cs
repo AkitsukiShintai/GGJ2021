@@ -112,7 +112,7 @@ public class MonsterAI : MonoBehaviour
             }
         }
         dir.y = 0;
-        m_Monster.MoveTo(dir.normalized, action.moveType);
+        m_Monster.MoveTowards(dir.normalized, action.moveType);
         m_Monster.AttackBy(action.attackType);
     }
 }

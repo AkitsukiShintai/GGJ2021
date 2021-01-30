@@ -12,7 +12,7 @@ public class MonsterTest : MonoBehaviour
     void Update()
     {
         var monster = gameObject.GetComponent<Monster>();
-        monster.MoveToward(target, moveType);
+        monster.MoveTowards(target, moveType);
         if (target.y > 0f)
         {
             monster.Jump();

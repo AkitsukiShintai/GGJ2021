@@ -83,7 +83,7 @@ namespace Assets.Script.Monster
         }
 
 
-        public void MoveToward(Vector3 direction, MonsterMoveType type)
+        public void MoveTowards(Vector3 direction, MonsterMoveType type)
         {
             status.moveType = type;
             status.moveDir = new Vector3(direction.x, 0f, 0f).normalized;
@@ -213,6 +213,10 @@ namespace Assets.Script.Monster
             if (CheckDeath()) Dead();
         }
 
+        public float GetRage()
+        {
+            return status.rage;
+        }
 
         bool CheckDeath()
         {
