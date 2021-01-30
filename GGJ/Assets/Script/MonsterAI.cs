@@ -8,6 +8,7 @@ public class MonsterAI : MonoBehaviour
     MAIActionData action;
     MAIMonsterData monster;
     MAIPlayerData[] players;
+    public Transform[] stairs;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +56,7 @@ public class MonsterAI : MonoBehaviour
     {
         ref var cfg = ref m_Monster.cfg;
         ref var p = ref players[monster.targetIndex];
-        action.moveType = MonsterMoveType.WALK;
+        action.moveType = MonsterMoveType.IDLE;
         action.targetPos = p.pos;
         if (monster.noBig
             && Time.time - monster.lastAreaAttackTime > cfg.areaAttackCoolDown
@@ -63,6 +64,7 @@ public class MonsterAI : MonoBehaviour
         {
             action.attackType = MonsterAttackType.RANGE;
             monster.lastAreaAttackTime = Time.time;
+            action.moveType = MonsterMoveType.WALK;
         }
         else if (p.isBig
             && Time.time - monster.lastDashAttackTime >= cfg.dashAttackCoolDown
@@ -86,7 +88,22 @@ public class MonsterAI : MonoBehaviour
 
     void Act()
     {
-        m_Monster.MoveTo(action.targetPos, action.moveType);
+        ref var cfg = ref m_Monster.cfg;
+        foreach (var stair in stairs)
+        {
+            if (stair.position.y < cfg.height)
+            {
+                // jump
+                break;
+            }
+        }
+        var dir = action.targetPos - monster.pos;
+        if (dir.y > cfg.height / 4)
+        {
+            // jump
+        }
+        dir.y = 0;
+        m_Monster.MoveTo(dir.normalized, action.moveType);
         m_Monster.AttackBy(action.attackType);
     }
 }

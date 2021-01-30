@@ -6,6 +6,7 @@ namespace Assets.Script
     [CreateAssetMenu(fileName = "怪物属性.asset", menuName = "GGJ/怪物属性")]
     public class MonsterConfig : ScriptableObject
     {
+        public float height = 1.6f;
 
         [Tooltip("暴躁初始值")]
         public float initRage;
