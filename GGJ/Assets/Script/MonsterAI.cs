@@ -9,6 +9,7 @@ public class MonsterAI : MonoBehaviour
     MAIMonsterData monster;
     MAIPlayerData[] players;
     public Transform[] stairs;
+    public bool isActive;
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +25,12 @@ public class MonsterAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Percept();
-        Think();
-        Act();
+        if (isActive)
+        {
+            Percept();
+            Think();
+            Act();
+        }
     }
 
     void Percept()
