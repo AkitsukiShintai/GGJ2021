@@ -25,10 +25,17 @@ namespace Assets.Script.Monster
                 if (nextDir != Vector3.zero) transform.rotation = Quaternion.LookRotation(nextDir);
             }
 
-            var pos = transform.position + Vector3.Dot(dir, Vector3.right) * Vector3.right * speed * Time.deltaTime;
-            pos.y = 0f;
-            transform.position = pos;
-
+            if (speed != 0f)
+            {
+                var pos = transform.position + Vector3.Dot(dir, Vector3.right) * Vector3.right * speed * Time.deltaTime;
+                pos.y = 0f;
+                transform.position = pos;
+                animatior.SetBool("IsMoving", true);
+            }
+            else
+            {
+                animatior.SetBool("IsMoving", false);
+            }
         }
 
     }

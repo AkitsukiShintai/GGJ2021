@@ -1,4 +1,5 @@
-﻿using Assets.Script;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -91,8 +92,21 @@ namespace Assets.Script.Monster
 
         public void AttackBy(MonsterAttackType type)
         {
-            status.attackType = type;
+            if (type == MonsterAttackType.DASH)
+            {
+                status.attackType = type;
+                StartCoroutine(Delay(() =>
+                {
+                    status.attackType = MonsterAttackType.IDLE;
+                }, cfg.dashAttackRange / cfg.dashAttackMoveSpeed));
+            }
             monsterAttack.Attack(type);
+        }
+
+        private IEnumerator Delay(Action action, float delaySeconds)
+        {
+            yield return new WaitForSeconds(delaySeconds);
+            action();
         }
 
 
