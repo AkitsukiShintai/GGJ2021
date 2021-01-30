@@ -55,7 +55,8 @@ public class Player : MonoBehaviour
         }
     }
 
-    private Star m_Star;
+    private List<Star> m_Stars;
+
     private float m_RageValue;
 
     private void Awake()
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour
         {
             players[1] = this;
         }
+        m_Stars = new List<Star>(2);
     }
 
     private void Start()
@@ -82,7 +84,7 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        if (m_Raging && m_Star)
+        if (m_Raging && m_Stars[0])
         {
             //狂暴且有星星，降低狂暴值
             m_RageValue = Mathf.Clamp(m_RageValue - Time.deltaTime * playerData.rageDescentRate, 0, playerData.rageMax);
@@ -98,25 +100,25 @@ public class Player : MonoBehaviour
     private void GetStar(Star star)
     {
         m_HaveStar = true;
-        m_Star = star;
+        m_Stars.Add(star);
         star.EatStar(gameObject);
     }
 
     //确认玩家可以失去这个星星后发生的事情
-    private void LoseStar()
+    private Star LoseStar()
     {
-        m_HaveStar = false;
-        m_Star = null;
+        Star losedStar = m_Stars[0];
+        m_Stars.RemoveAt(0);
+        if (m_Stars.Count == 0)
+        {
+            m_HaveStar = false;
+        }
+        return losedStar;
     }
 
     //吃星星事件触发，也就是当人碰到星星的时候触发
     private void EatStar(Star star)
     {
-        if (m_HaveStar)
-        {
-            Debug.LogError(gameObject.name + "我已经有星星了为啥还要吃！");
-            return;
-        }
         //TODO：吃星星事件人物属性处理
         if (m_Raging)
         {
@@ -150,10 +152,10 @@ public class Player : MonoBehaviour
             return;
         }
 
-        LoseStar();
+        Star star = LoseStar();
         if (!rageVomit)
         {
-            m_Star.VomitStar(FindAnotherPlayer(this).gameObject);
+            star.VomitStar(FindAnotherPlayer(this).gameObject);
         }
         else
         {
@@ -161,12 +163,12 @@ public class Player : MonoBehaviour
             dir.z = 0;
             dir = dir.normalized;
             dir.y = Mathf.Abs(dir.y);
-            m_Star.VomitStar(dir);
+            star.VomitStar(dir);
         }
         //调用回调，LoseStar之后星星和对象的关系已经确定
         if (vomitStarEvents != null)
         {
-            vomitStarEvents.Invoke(this, m_Star);
+            vomitStarEvents.Invoke(this, m_Stars[0]);
         }
     }
 
@@ -200,6 +202,15 @@ public class Player : MonoBehaviour
             transform.localScale = Vector3.one;
 
             m_Raging = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Star"))
+        {
+            EatStar(other.gameObject.GetComponent<Star>());
+            Debug.Log(gameObject.name + "吃星星拉~");
         }
     }
 }
