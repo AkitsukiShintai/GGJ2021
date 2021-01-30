@@ -33,6 +33,30 @@ public class Player : MonoBehaviour
     //人物属性, 直接通过scriptableObject配置
     public PlayerData playerData;
 
+    private bool m_Raging = false;
+
+    //是否狂暴中
+    public bool raging
+    {
+        get
+        {
+            return m_Raging;
+        }
+    }
+
+    private bool m_HaveStar = false;
+
+    //是否拥有星星
+    public bool haveStar
+    {
+        get
+        {
+            return m_HaveStar;
+        }
+    }
+
+    private Star m_Star;
+
     private void Awake()
     {
         if (players == null)
@@ -52,14 +76,60 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (m_Raging && m_Star)
+        {
+            //狂暴且有星星，降低狂暴值
+            playerData.rage = Mathf.Clamp(playerData.rage - Time.deltaTime * playerData.rageDescentRate, 0, playerData.rageMax);
+            TryStopRaging();
+        }
+        else
+        {
+            TryRage();
+        }
+    }
+
+    //确认玩家可以得到这个星星后发生的事情
+    private void GetStar(Star star)
+    {
+        m_HaveStar = true;
+        m_Star = star;
+        star.PlayerEatStar(this);
+    }
+
+    //确认玩家可以失去这个星星后发生的事情
+    private void LoseStar(Star star)
+    {
+        star.PlayerVomitStar(this);
+        m_HaveStar = false;
+        m_Star = null;
     }
 
     //吃星星事件触发，也就是当人碰到星星的时候触发
     private void EatStar(Star star)
     {
+        if (m_HaveStar)
+        {
+            Debug.LogError(gameObject.name + "我已经有星星了为啥还要吃！");
+            return;
+        }
         //TODO：吃星星事件人物属性处理
-        star.owner = this;
-        //调用回调
+        if (m_Raging)
+        {
+            if (star.state == Star.StarState.Idle)
+            {
+                //Idle的星星不能被狂暴人吃
+                return;
+            }
+            else if (star.state == Star.StarState.InBody)
+            {
+                Debug.LogError("星星在体内为啥会被吃！");
+                return;
+            }
+        }
+
+        //确认完成后获得星星
+        GetStar(star);
+        //调用回调，GetStar之后星星和对象的关系已经确定
         if (eatStarEvents != null)
         {
             eatStarEvents.Invoke(this, star);
@@ -67,14 +137,53 @@ public class Player : MonoBehaviour
     }
 
     //吐星星事件触发，也就是星星离开人的时候触发
-    private void VomitStar(Star star)
+    private void VomitStar()
     {
         //TODO：吐星星事件人物属性处理
-        star.owner = null;
-        //调用回调
+        if (!m_HaveStar)
+        {
+            return;
+        }
+
+        LoseStar(m_Star);
+
+        //调用回调，LoseStar之后星星和对象的关系已经确定
         if (vomitStarEvents != null)
         {
-            vomitStarEvents.Invoke(this, star);
+            vomitStarEvents.Invoke(this, m_Star);
+        }
+    }
+
+    private bool ShouldRage()
+    {
+        if (playerData.rage >= playerData.rageMax)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void TryRage()
+    {
+        if (!ShouldRage() || m_Raging)
+        {
+            return;
+        }
+        //TODO:变大， 无法控制
+        transform.localScale = Vector3.one * playerData.amplification;
+        //吐星星
+        VomitStar();
+    }
+
+    //尝试停止狂暴
+    private void TryStopRaging()
+    {
+        if (playerData.rage == 0.0f && m_Raging && m_HaveStar)
+        {
+            //TODO:变回来
+            transform.localScale = Vector3.one;
+
+            m_Raging = false;
         }
     }
 }
