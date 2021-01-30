@@ -4,48 +4,92 @@ using UnityEngine;
 
 public class Star : MonoBehaviour
 {
+    public enum StarState
+    {
+        /// <summary>
+        /// 如果星星是自己飞出来的那么处于idle状态(狂暴的人或者怪物扔出来)
+        /// </summary>
+        Idle,
+
+        /// <summary>
+        /// 正常人扔出来处于飞行状态，给另一个对象
+        /// </summary>
+        Flying,
+
+        /// <summary>
+        /// 被某个对象持有
+        /// </summary>
+        InBody
+    }
+
     //现在星星的拥有者
-    public Player owner;
+    public GameObject owner;
 
     [Tooltip("星星移动速度")]
     public float moveSpeed;
 
-    public bool moving = false;
-    private Player target;
+    private StarState m_State = StarState.Idle;
+
+    public StarState state
+    {
+        get
+        {
+            return m_State;
+        }
+        set
+        {
+            m_State = value;
+        }
+    }
+
+    private Transform target;
 
     private void Start()
     {
-        moving = false;
-
-        Player.eatStarEvents += EatStarCallBack;
-        Player.vomitStarEvents += VomitStarCallBack;
+        m_State = StarState.Idle;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (moving)
+        if (m_State == StarState.Flying)
         {
             transform.position += (target.transform.position - transform.position).normalized * moveSpeed;
         }
     }
 
-    private void EatStarCallBack(Player player, Star star)
+    /// <summary>
+    /// 玩家吃星星
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <param name="star">The star.</param>
+    public void PlayerEatStar(Player player)
     {
-        if (moving)
+        if (m_State == StarState.InBody)
         {
             return;
         }
-        Player startPlayer = player;
-        target = Player.FindAnotherPlayer(player);
-        Vector3 moveDir = (target.transform.position - startPlayer.transform.position).normalized;
-        transform.position = startPlayer.transform.position + moveDir * 0.5f;
-        moving = true;
+        owner = player.gameObject;
+        target = null;
+        m_State = StarState.InBody;
     }
 
-    private void VomitStarCallBack(Player player, Star star)
+    /// <summary>
+    /// 玩家吐星星
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <param name="star">The star.</param>
+    public void PlayerVomitStar(Player player)
     {
-        moving = false;
-        target = null;
+        if (m_State != StarState.InBody)
+        {
+            return;
+        }
+        owner = null;
+        Player startPlayer = player;
+        target = Player.FindAnotherPlayer(player).transform;
+        Vector3 moveDir = (target.transform.position - startPlayer.transform.position).normalized;
+        transform.position = startPlayer.transform.position + moveDir * 0.5f;
+        m_State = StarState.Flying;
     }
 }
