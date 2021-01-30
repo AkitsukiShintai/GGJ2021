@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 5460099263247494971}
   - component: {fileID: 5460099263247494970}
   - component: {fileID: 979491911118688476}
+  - component: {fileID: -6534223305575840634}
   m_Layer: 0
   m_Name: zhujue_Right
   m_TagString: Player
@@ -209,6 +210,7 @@ MonoBehaviour:
   m_PlayerType: 1
   playerData: {fileID: 11400000, guid: 26527018e366c9c4d8a46793ac695031, type: 2}
   m_turnSpeed: 200
+  jumpForce: 0
 --- !u!114 &5460099263247494970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,6 +240,19 @@ MonoBehaviour:
   visionPrefab: {fileID: 6237884060729729379, guid: 55851262b1c012d4d885ae3793c6ff2a,
     type: 3}
   VisibililtyObj: {fileID: 0}
+--- !u!114 &-6534223305575840634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5118132654595060554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e716d3ff2df1d6d4dbd2bbfb3aa85b70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_inRangeEnemys: []
 --- !u!1 &8563742834372847065
 GameObject:
   m_ObjectHideFlags: 0
