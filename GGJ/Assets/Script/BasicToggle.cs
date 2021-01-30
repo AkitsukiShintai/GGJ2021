@@ -4,5 +4,7 @@ using UnityEngine;
 
 public class BasicToggle : MonoBehaviour
 {
-    public virtual void OnToggle() { }
+    public virtual void OnToggle() {
+        Debug.Log("开启");
+    }
 }
