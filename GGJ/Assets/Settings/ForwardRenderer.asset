@@ -49,4 +49,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 100a62de3481dc5488a9f5f20b968563, type: 3}
   m_Name: NewShadowingMaskRenderPassFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0

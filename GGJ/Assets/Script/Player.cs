@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
     }
 
     private Star m_Star;
+    private float m_RageValue;
 
     private void Awake()
     {
@@ -72,14 +73,19 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        m_RageValue = playerData ? playerData.rage : 0;
     }
 
     private void Update()
     {
+        if (playerData == null)
+        {
+            return;
+        }
         if (m_Raging && m_Star)
         {
             //狂暴且有星星，降低狂暴值
-            playerData.rage = Mathf.Clamp(playerData.rage - Time.deltaTime * playerData.rageDescentRate, 0, playerData.rageMax);
+            m_RageValue = Mathf.Clamp(m_RageValue - Time.deltaTime * playerData.rageDescentRate, 0, playerData.rageMax);
             TryStopRaging();
         }
         else
@@ -166,7 +172,7 @@ public class Player : MonoBehaviour
 
     private bool ShouldRage()
     {
-        if (playerData.rage >= playerData.rageMax)
+        if (m_RageValue >= playerData.rageMax)
         {
             return true;
         }
@@ -188,7 +194,7 @@ public class Player : MonoBehaviour
     //尝试停止狂暴
     private void TryStopRaging()
     {
-        if (playerData.rage == 0.0f && m_Raging && m_HaveStar)
+        if (m_RageValue == 0.0f && m_Raging && m_HaveStar)
         {
             //TODO:变回来
             transform.localScale = Vector3.one;

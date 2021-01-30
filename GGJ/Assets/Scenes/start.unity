@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 95278984}
   - component: {fileID: 95278983}
   - component: {fileID: 95278982}
+  - component: {fileID: 95278987}
   m_Layer: 0
   m_Name: Player0
   m_TagString: Untagged
@@ -153,8 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae54141a0cb5a5408c9b030e34364f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 0}
-  testStar: {fileID: 1260103554}
+  playerData: {fileID: 11400000, guid: 26527018e366c9c4d8a46793ac695031, type: 2}
 --- !u!65 &95278983
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -229,6 +229,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &95278987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95278981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1864dd80ec96d624ba99f87ba215a1c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlayerType: 0
+  playerData: {fileID: 11400000, guid: 26527018e366c9c4d8a46793ac695031, type: 2}
+  m_turnSpeed: 200
 --- !u!1 &246874405
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +277,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
-  testStar: {fileID: 1260103554}
 --- !u!65 &246874407
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -546,7 +560,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
   moveSpeed: 0.1
-  moving: 0
 --- !u!135 &1260103555
 SphereCollider:
   m_ObjectHideFlags: 0
