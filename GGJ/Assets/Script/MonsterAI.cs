@@ -8,6 +8,8 @@ public class MonsterAI : MonoBehaviour
     MAIActionData action;
     MAIMonsterData monster;
     MAIPlayerData[] players;
+    public Transform[] stairs;
+    public bool isActive;
 
     // Start is called before the first frame update
     void Start()
@@ -23,9 +25,12 @@ public class MonsterAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Percept();
-        Think();
-        Act();
+        if (isActive)
+        {
+            Percept();
+            Think();
+            Act();
+        }
     }
 
     void Percept()
@@ -37,7 +42,9 @@ public class MonsterAI : MonoBehaviour
         {
             ref var p = ref players[i];
             if (p.isBig)
+            {
                 monster.noBig = false;
+            }
             p.dist = (monster.pos - p.pos).magnitude;
             if (p.isAlive)
             {
@@ -55,7 +62,7 @@ public class MonsterAI : MonoBehaviour
     {
         ref var cfg = ref m_Monster.cfg;
         ref var p = ref players[monster.targetIndex];
-        action.moveType = MonsterMoveType.WALK;
+        action.moveType = MonsterMoveType.IDLE;
         action.targetPos = p.pos;
         if (monster.noBig
             && Time.time - monster.lastAreaAttackTime > cfg.areaAttackCoolDown
@@ -63,6 +70,7 @@ public class MonsterAI : MonoBehaviour
         {
             action.attackType = MonsterAttackType.RANGE;
             monster.lastAreaAttackTime = Time.time;
+            action.moveType = MonsterMoveType.WALK;
         }
         else if (p.isBig
             && Time.time - monster.lastDashAttackTime >= cfg.dashAttackCoolDown
@@ -86,7 +94,25 @@ public class MonsterAI : MonoBehaviour
 
     void Act()
     {
-        m_Monster.MoveTo(action.targetPos, action.moveType);
+        ref var cfg = ref m_Monster.cfg;
+        var dir = action.targetPos - monster.pos;
+        if (dir.y > cfg.height / 4)
+        {
+            // jump
+        }
+        else
+        {
+            foreach (var stair in stairs)
+            {
+                if (stair.position.y < cfg.height)
+                {
+                    // jump
+                    break;
+                }
+            }
+        }
+        dir.y = 0;
+        m_Monster.MoveTo(dir.normalized, action.moveType);
         m_Monster.AttackBy(action.attackType);
     }
 }
