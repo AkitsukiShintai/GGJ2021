@@ -10,6 +10,7 @@ public class MonsterAI : MonoBehaviour
     MAIPlayerData[] players;
     public Transform[] stairs;
     public bool isActive;
+    Vector3 size;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,7 @@ public class MonsterAI : MonoBehaviour
             new MAIPlayerData(p=Player.FindAnotherPlayer(null)),
             new MAIPlayerData(Player.FindAnotherPlayer(p))
         };
+        size = Vector3.Scale(GetComponent<BoxCollider>().size, transform.localScale);
     }
 
     // Update is called once per frame
@@ -35,17 +37,16 @@ public class MonsterAI : MonoBehaviour
 
     void Percept()
     {
-        monster.pos = gameObject.transform.position;
         monster.noBig = true;
         float dist, minDist = float.MaxValue;
-        for (int i=0; i < players.Length; i++)
+        for (int i = 0; i < players.Length; i++)
         {
             ref var p = ref players[i];
             if (p.isBig)
             {
                 monster.noBig = false;
             }
-            p.dist = (monster.pos - p.pos).magnitude;
+            p.dist = (transform.position - p.pos).magnitude;
             if (p.isAlive)
             {
                 dist = p.dist * (p.isBig ? 0.95f : 1);
@@ -95,24 +96,52 @@ public class MonsterAI : MonoBehaviour
     void Act()
     {
         ref var cfg = ref m_Monster.cfg;
-        var dir = action.targetPos - monster.pos;
-        if (dir.y > cfg.height / 4)
+        var dir = action.targetPos - transform.position;
+        bool jump = false;
+        if (dir.y > size.y / 2)
         {
-            // jump
+            jump = true;
         }
         else
         {
             foreach (var stair in stairs)
             {
-                if (stair.position.y < cfg.height)
+                var v = stair.position - transform.position;
+                if (Mathf.Abs(v.x) < size.x && 0 < v.y && v.y < size.y * 2)
                 {
-                    // jump
+                    jump = false;
                     break;
+                }
+                float speed;
+                switch (action.moveType)
+                {
+                    case MonsterMoveType.IDLE:
+                        speed = 0;
+                        break;
+                    case MonsterMoveType.WALK:
+                        speed = cfg.walkSpeed;
+                        break;
+                    case MonsterMoveType.RUN:
+                        speed = cfg.runSpeed;
+                        break;
+                    default:
+                        throw new System.Exception();
+                };
+                if (Vector3.Dot(dir, v) > 0 && speed * cfg.jumpDuration > Mathf.Abs(v.x))// && v.y < size.y)
+                {
+                    jump = true;
                 }
             }
         }
+        if (jump)
+        {
+            m_Monster.Jump();
+        }
         dir.y = 0;
         m_Monster.MoveTowards(dir.normalized, action.moveType);
-        m_Monster.AttackBy(action.attackType);
+        if (m_Monster.status.attackType == MonsterAttackType.IDLE)
+        {
+            m_Monster.AttackBy(action.attackType);
+        }
     }
 }

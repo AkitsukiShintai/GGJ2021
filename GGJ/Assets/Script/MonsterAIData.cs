@@ -22,7 +22,6 @@ namespace MonsterAIData
 
     struct MAIMonsterData
     {
-        public Vector3 pos;
         public bool noBig;
         public int targetIndex;
         public float lastCommonAttackTime;
