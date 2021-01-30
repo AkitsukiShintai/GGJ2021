@@ -5,9 +5,9 @@ using System.Xml.Serialization;
 using UnityEngine;
 
 
-public enum MonsterAttackType { };
+public enum MonsterAttackType {COMMON, DASH, RANGE};
 
-public enum MonsterMoveType { };
+public enum MonsterMoveType {IDLE, WALK, RUN};
 
 
 public class MonsterStatus {
@@ -15,8 +15,6 @@ public class MonsterStatus {
     public float rage;
     public MonsterAttackType attackType;
     public MonsterMoveType moveType;
-    public Vector3 moveTarget;
-
 }
 
 
@@ -24,7 +22,7 @@ public class Monster : MonoBehaviour
 {
 
     public MonsterConfig cfg;
-    private MonsterStatus status;
+    private MonsterStatus status = new MonsterStatus();
 
 
     // Start is called before the first frame update
@@ -51,8 +49,13 @@ public class Monster : MonoBehaviour
 
     void EatStar(Star star)
     {
-        float ragePerStar = 5.0f;
-        status.rage -= ragePerStar;
+        // 扣除狂暴值
+        // 记录time，等待吐出
+    }
+
+    void VomitStar(Star star)
+    {
+        // 吐出星星，告诉星星往哪里飞
     }
 
     bool CheckDeath()
