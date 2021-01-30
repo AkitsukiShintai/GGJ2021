@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 394060490408638267}
   - component: {fileID: 1161243975201271778}
   - component: {fileID: 6817190031673518264}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 3161505523171013413}
   - component: {fileID: 974290316292180879}
   - component: {fileID: 5579488161088477473}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: zhujue_Left
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 5320340558217714263}
   - component: {fileID: 1271540927525922081}
   - component: {fileID: 3161505522186444393}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,6 +348,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Magic_Ring
+      objectReference: {fileID: 0}
+    - target: {fileID: 2642393909201785830, guid: 558f7e78de2818c449145e6620a0c616,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3449893577504622940, guid: 558f7e78de2818c449145e6620a0c616,
         type: 3}
