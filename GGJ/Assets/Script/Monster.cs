@@ -1,6 +1,6 @@
 ﻿using Assets.Script;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public enum MonsterAttackType {IDLE, COMMON, DASH, RANGE};
 
@@ -25,17 +25,15 @@ public class Monster : MonoBehaviour {
 
     public MonsterConfig cfg;
     public MonsterStatus status;
-    private float getStarTime;
-    private Star star;
+    private Queue<KeyValuePair<float, Star>> stars;
     private Animator animatior;
-    public MonsterMoveType type;
-    public Vector3 target;
     private float turnPercent = 5f;
 
 
     private void Awake()
     {
         status = new MonsterStatus(cfg.initRage);
+        stars = new Queue<KeyValuePair<float, Star>>(2);
         //animatior = gameObject.GetComponent<Animator>();
     }
 
@@ -49,20 +47,23 @@ public class Monster : MonoBehaviour {
     void Update()
     {
         if (CheckVomit()) VomitStar();  // 吐星星
-       
+        ChangeRage();
+        Attack();
+
     }
 
     void FixedUpdate()
     {
-        status.moveType = type;
-        status.moveDir = target;
         Move();
     }
 
     void Move()
     {
-        status.moveDir = Vector3.Slerp(transform.forward, status.moveDir, Time.deltaTime * turnPercent);
-        transform.rotation = Quaternion.LookRotation(status.moveDir);
+        if (transform.forward != status.moveDir)
+        {
+            status.moveDir = Vector3.Slerp(transform.forward, status.moveDir, Time.deltaTime * turnPercent);
+            transform.rotation = Quaternion.LookRotation(status.moveDir);
+        }
 
         if (status.moveType != MonsterMoveType.IDLE)
         {
@@ -70,11 +71,20 @@ public class Monster : MonoBehaviour {
         }
     }
 
+    void Attack()
+    {
+
+    }
+
 
     public float GetSpeed()
     {
         float speed;
-        if (status.moveType == MonsterMoveType.RUN)
+        if (status.attackType == MonsterAttackType.DASH)
+        {
+            speed = cfg.dashAttackMoveSpeed;
+        }
+        else if (status.moveType == MonsterMoveType.RUN)
         {
             speed = cfg.runSpeed;
         }
@@ -95,24 +105,22 @@ public class Monster : MonoBehaviour {
 
     public void AttackBy(MonsterAttackType type)
     {
-
+        status.attackType = type;
     }
 
     void EatStar(Star star)
     {
         star.EatStar(gameObject);
-        // 扣除狂暴值
-        ReduceRage(2.0f);
         // 记录time，等待吐出
-        getStarTime = Time.time;
+        stars.Enqueue(new KeyValuePair<float, Star>(Time.time, star));
     }
 
 
     void VomitStar()
     {
         Vector3 pos = GetStarDropPos();
+        var star = stars.Dequeue().Value;
         star.VomitStar(pos);  // 吐出星星，告诉星星往哪里飞
-        star = null;
     }
     
     Vector3 GetStarDropPos()
@@ -122,13 +130,24 @@ public class Monster : MonoBehaviour {
 
     bool CheckVomit()
     {
-        return star != null && getStarTime - Time.time > cfg.holdStarTime;
+        if (stars.Count > 0)
+        {
+            var getTime = stars.Peek().Key;
+            return getTime - Time.time > cfg.holdStarTime;
+        }
+        return false;
     }
 
 
-    void ReduceRage(float dec)
+    void ChangeRage()
     {
-        status.rage -= dec;
+        float rageRate = 0f;
+        foreach (var timeAndStar in stars)
+        {
+            var star = timeAndStar.Value;
+            rageRate -= 10f;
+        }
+        status.rage += rageRate * Time.deltaTime;
         if (CheckDeath()) Dead();
     }
 
