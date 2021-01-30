@@ -11,4 +11,12 @@ public class Gear : MonoBehaviour
             other.gameObject.GetComponent<PlayerMove>().Die();
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<PlayerMove>().Die();
+        }
+    }
 }
