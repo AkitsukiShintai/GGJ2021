@@ -13,11 +13,15 @@ MonoBehaviour:
   m_Name: "\u4EBA\u7269\u5C5E\u6027"
   m_EditorClassIdentifier: 
   rage: 0
-  rageDescentRate: 0
-  rageMax: 0
-  moveSpeed: 0
-  jump: 0
-  amplification: 0
+  rageDescentRate: 1
+  rageMax: 10
+  moveSpeed: 0.1
+  jump: 4
+  amplification: 3
   vision: 0
   visionOverlap: 0
   visionAmplification: 0
+  jumpKey: 32
+  fastKey: 106
+  rangeAttackKey: 107
+  attackKey: 108
