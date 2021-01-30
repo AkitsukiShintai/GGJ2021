@@ -169,6 +169,7 @@ public class PlayerMove : MonoBehaviour
 
     public void Die()
     {
+        gameObject.SetActive(false);
         m_IsDie = true;
         m_animator.SetTrigger("Die");
     }
