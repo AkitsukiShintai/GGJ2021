@@ -37,6 +37,9 @@ namespace Assets.Script
         [Tooltip("突进攻击CD")]
         public float dashAttackCoolDown;
 
+        [Tooltip("突进攻击伤害")]
+        public float dashAttackDmg;
+
         [Tooltip("范围攻击范围")]
         public float areaAttackRange;
 

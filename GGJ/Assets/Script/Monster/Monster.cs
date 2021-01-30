@@ -36,7 +36,7 @@ namespace Assets.Script.Monster
         private Animator animator;
         private MonsterMove monsterMove;
         private MonsterAttack monsterAttack;
-        private float lastTouchDmgTime;
+        private float lastTouchDmgTime = 0f;
 
         void Awake()
         {
@@ -108,9 +108,10 @@ namespace Assets.Script.Monster
         void TryTouchAttack(Player player)
         {
             float curTime = Time.time;
-            if (curTime > lastTouchDmgTime + cfg.commonAttackTime)
+            if (curTime >= lastTouchDmgTime + cfg.commonAttackTime)
             {
-                lastTouchDmgTime = Time.time;
+                lastTouchDmgTime = curTime;
+                Debug.Log("BOSS 触摸 攻击" + player.name);
                 player.AddRageValue(cfg.commonAttackDmg);
             }
         }
@@ -122,6 +123,7 @@ namespace Assets.Script.Monster
             {
                 if (status.attackType == MonsterAttackType.DASH)
                 {
+                    Debug.Log("BOSS Dash 攻击" + playerObj.name);
                     playerObj.GetComponent<Player>().AddRageValue(cfg.dashAttackDmg);
                 }
                 else
