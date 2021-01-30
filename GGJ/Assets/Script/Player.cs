@@ -10,9 +10,17 @@ public class Player : MonoBehaviour
     //吐星星回调
     public delegate void VomitStarCallback(Player player, Star star);
 
+    //复活回调
+    public delegate void ReviveCallback(Player player);
+
     public static event EatStarCallback eatStarEvents = null;
 
     public static event VomitStarCallback vomitStarEvents = null;
+
+    /// <summary>
+    /// 复活player回调，参数复活对象
+    /// </summary>
+    public static event ReviveCallback revivePlayerEvents = null;
 
     //获得两个玩家
     private static Player[] players = null;
@@ -104,7 +112,7 @@ public class Player : MonoBehaviour
             TryRage();
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(playerData.attackKey))
         {
             VomitStar(false);
         }
@@ -169,7 +177,7 @@ public class Player : MonoBehaviour
         Star star = LoseStar();
         if (!rageVomit)
         {
-            star.VomitStar(FindAnotherPlayer(this).gameObject);
+            //star.VomitStar(FindAnotherPlayer(this).gameObject);
         }
         else
         {
@@ -244,5 +252,25 @@ public class Player : MonoBehaviour
             EatStar(other.gameObject.GetComponent<Star>());
             Debug.Log(gameObject.name + "吃星星拉~");
         }
+        if (other.gameObject.CompareTag("Revive"))
+        {
+            if (m_HaveStar)
+            {
+                VomitStar(true);
+                if (revivePlayerEvents != null)
+                {
+                    revivePlayerEvents.Invoke(FindAnotherPlayer(this));
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 增加狂暴值
+    /// </summary>
+    /// <param name="value">The value.</param>
+    public void AddRageValue(float value)
+    {
+        m_RageValue += value;
     }
 }

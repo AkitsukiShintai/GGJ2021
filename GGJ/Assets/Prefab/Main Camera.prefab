@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4656402890112910523}
   - component: {fileID: 4656402890112910520}
   - component: {fileID: 4656402890112910521}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 4656402890254676003}
   - component: {fileID: 4656402890254676001}
   - component: {fileID: 4656402890254676000}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

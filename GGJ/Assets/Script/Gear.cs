@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class Gear : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)

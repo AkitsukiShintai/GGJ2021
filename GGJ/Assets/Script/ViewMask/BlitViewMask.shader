@@ -49,7 +49,7 @@
             {
                 half4 col = tex2D(_ForgroundMask, i.uv);
                 half4 bg = tex2D(_BackgroundRT, i.uv);
-                return half4(bg.rgb * 0.3, 1.0 - col.r);
+                return half4(bg.rgb * 0.2, 1.0 - col.r);
             }
             ENDHLSL
         }
