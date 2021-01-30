@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 3161505523171013435}
   - component: {fileID: 3161505523171013412}
   - component: {fileID: 3161505523171013413}
+  - component: {fileID: 974290316292180879}
   m_Layer: 0
   m_Name: zhujue_Left
   m_TagString: Player
@@ -193,6 +194,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 56209f848de282049b2603c02b5b8db4, type: 2}
+  testStar: {fileID: 0}
+--- !u!114 &974290316292180879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2818837013782933333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac76744ed59d7f840b2f1c5476035200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visionPrefab: {fileID: 6237884060729729379, guid: 55851262b1c012d4d885ae3793c6ff2a,
+    type: 3}
+  VisibililtyObj: {fileID: 0}
 --- !u!1 &8421490674984393532
 GameObject:
   m_ObjectHideFlags: 0
