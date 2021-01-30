@@ -12,11 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38498cc4cdcfa9d459f336a8a4c039ff, type: 3}
   m_Name: "\u602A\u7269\u5C5E\u6027"
   m_EditorClassIdentifier: 
-  initRage: 0
+  initRage: 200
   deadRage: 0
-  dashAttackRange: 0
-  dashAttackMoveSpeed: 0
+  commonAttackRange: 4
   commonAttackSpeed: 0
-  walkSpeed: 3
+  dashAttackRange: 0
+  dashAttackMoveSpeed: 3
+  dashAttackCoolDown: 2
+  areaAttackRange: 10
+  areaAttackCoolDown: 3
+  walkSpeed: 1
   runSpeed: 5
-  holdStarTime: 0
+  holdStarTime: 10
