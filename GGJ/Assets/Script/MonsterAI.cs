@@ -38,7 +38,9 @@ public class MonsterAI : MonoBehaviour
         {
             ref var p = ref players[i];
             if (p.isBig)
+            {
                 monster.noBig = false;
+            }
             p.dist = (monster.pos - p.pos).magnitude;
             if (p.isAlive)
             {
@@ -89,18 +91,21 @@ public class MonsterAI : MonoBehaviour
     void Act()
     {
         ref var cfg = ref m_Monster.cfg;
-        foreach (var stair in stairs)
-        {
-            if (stair.position.y < cfg.height)
-            {
-                // jump
-                break;
-            }
-        }
         var dir = action.targetPos - monster.pos;
         if (dir.y > cfg.height / 4)
         {
             // jump
+        }
+        else
+        {
+            foreach (var stair in stairs)
+            {
+                if (stair.position.y < cfg.height)
+                {
+                    // jump
+                    break;
+                }
+            }
         }
         dir.y = 0;
         m_Monster.MoveTo(dir.normalized, action.moveType);
