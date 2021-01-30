@@ -54,7 +54,7 @@ public class CameraBounds : MonoBehaviour
         float dist = cam.transform.InverseTransformPoint(p.transform.position).z;
         float widthFov = cam.fieldOfView * cam.aspect;
         cam.transform.position = new Vector3(Targeting.x, Targeting.y, cam.transform.position.z);// Targeting - cam.transform.forward * dist;
-        float width = Mathf.Tan(widthFov * 0.5f * Mathf.Deg2Rad) * dist * 2.0f;
+        float width = Mathf.Max(0.0f, Mathf.Tan(widthFov * 0.5f * Mathf.Deg2Rad) * dist * 2.0f - 2.0f);
 
         LeftWall.position = Targeting - Vector3.right * width * 0.5f;
         RightWall.position = Targeting + Vector3.right * width * 0.5f;
