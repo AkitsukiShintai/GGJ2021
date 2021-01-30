@@ -25,6 +25,9 @@ namespace Assets.Script
             get => 1 / commonAttackSpeed;
         }
 
+        [Tooltip("普通攻击伤害")]
+        public float commonAttackDmg;
+
         [Tooltip("突进攻击范围")]
         public float dashAttackRange;
 
@@ -39,6 +42,9 @@ namespace Assets.Script
 
         [Tooltip("范围攻击CD")]
         public float areaAttackCoolDown;
+
+        [Tooltip("范围攻击伤害")]
+        public float areaAttackDmg;
 
         [Tooltip("走路速度")]
         public float walkSpeed;

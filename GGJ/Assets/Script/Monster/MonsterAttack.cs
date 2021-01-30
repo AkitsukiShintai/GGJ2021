@@ -7,14 +7,14 @@ namespace Assets.Script.Monster
         Transform transform;
         Animator animator;
         Vector3 commonAttackRange;
-        float rangeAttackRadius;
+        MonsterConfig cfg;
 
-        public MonsterAttack(Transform transform, Animator animator, float rangeAttackRadius)
+        public MonsterAttack(Transform transform, Animator animator, MonsterConfig cfg)
         {
             this.transform = transform;
             this.animator = animator;
             commonAttackRange = new Vector3(0.8f, 0.5f, 0.8f);
-            this.rangeAttackRadius = rangeAttackRadius;
+            this.cfg = cfg;
         }
 
         public void Attack(MonsterAttackType type)
@@ -45,16 +45,20 @@ namespace Assets.Script.Monster
 
             foreach (var collsion in collisions)
             {
-                Debug.Log("BOSS普攻命中" + collsion.gameObject.name);
+                var playerObj = collsion.gameObject;
+                playerObj.GetComponent<Player>().AddRageValue(cfg.commonAttackDmg);
+                Debug.Log("BOSS普攻命中" + playerObj.name);
             }
 
         }
 
         private void RangeAttack()
         {
-            var collisions = Physics.OverlapSphere(transform.position, rangeAttackRadius, 1 << LayerMask.NameToLayer("Attackable"));
+            var collisions = Physics.OverlapSphere(transform.position, cfg.areaAttackRange, 1 << LayerMask.NameToLayer("Attackable"));
             foreach (var collsion in collisions)
             {
+                var playerObj = collsion.gameObject;
+                playerObj.GetComponent<Player>().AddRageValue(cfg.areaAttackDmg);
                 Debug.Log("BOSS范围攻击命中" + collsion.gameObject.name);
             }
         }

@@ -36,6 +36,7 @@ namespace Assets.Script.Monster
         private Animator animator;
         private MonsterMove monsterMove;
         private MonsterAttack monsterAttack;
+        private float lastTouchDmgTime;
 
         void Awake()
         {
@@ -43,10 +44,9 @@ namespace Assets.Script.Monster
             stars = new Queue<KeyValuePair<float, Star>>(2);
             animator = gameObject.GetComponent<Animator>();
             monsterMove = new MonsterMove(transform, animator);
-            monsterAttack = new MonsterAttack(transform, animator, cfg.areaAttackRange);
+            monsterAttack = new MonsterAttack(transform, animator, cfg);
         }
 
-        // public方法设置MonsterStatus, Update检查并更新动画机的状态
         void Update()
         {
             if (CheckVomit()) VomitStar();  // 吐星星
@@ -98,12 +98,38 @@ namespace Assets.Script.Monster
 
         private void OnCollisionStay(Collision collision)
         {
-            if (collision.gameObject.CompareTag("Player"))
+            var playerObj = collision.gameObject;
+            if (playerObj.CompareTag("Player"))
             {
-
+                TryTouchAttack(playerObj.GetComponent<Player>());
             }
         }
 
+        void TryTouchAttack(Player player)
+        {
+            float curTime = Time.time;
+            if (curTime > lastTouchDmgTime + cfg.commonAttackTime)
+            {
+                lastTouchDmgTime = Time.time;
+                player.AddRageValue(cfg.commonAttackDmg);
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            var playerObj = collision.gameObject;
+            if (playerObj.CompareTag("Player"))
+            {
+                if (status.attackType == MonsterAttackType.DASH)
+                {
+                    playerObj.GetComponent<Player>().AddRageValue(cfg.dashAttackDmg);
+                }
+                else
+                {
+                    TryTouchAttack(playerObj.GetComponent<Player>());
+                }
+            }
+        }
 
         void EatStar(Star star)
         {
