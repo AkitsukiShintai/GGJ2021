@@ -31,4 +31,16 @@ public class PlayerData : ScriptableObject
 
     [Tooltip("视野扩大值")]
     public float visionAmplification;
+
+    [Tooltip("跳跃按键")]
+    public KeyCode jumpKey;
+
+    [Tooltip("突进按键")]
+    public KeyCode fastKey;
+
+    [Tooltip("范围攻击按键")]
+    public KeyCode rangeAttackKey;
+
+    [Tooltip("普通攻击案件")]
+    public KeyCode attackKey;
 }
