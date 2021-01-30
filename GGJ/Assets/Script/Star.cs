@@ -63,7 +63,7 @@ public class Star : MonoBehaviour
     /// </summary>
     /// <param name="player">The player.</param>
     /// <param name="star">The star.</param>
-    public void PlayerEatStar(Player player)
+    public void EatStar(GameObject player)
     {
         if (m_State == StarState.InBody)
         {
@@ -77,19 +77,26 @@ public class Star : MonoBehaviour
     /// <summary>
     /// 玩家吐星星
     /// </summary>
-    /// <param name="player">The player.</param>
-    /// <param name="star">The star.</param>
-    public void PlayerVomitStar(Player player)
+    public void VomitStar(GameObject target)
     {
         if (m_State != StarState.InBody)
         {
             return;
         }
-        owner = null;
-        Player startPlayer = player;
-        target = Player.FindAnotherPlayer(player).transform;
-        Vector3 moveDir = (target.transform.position - startPlayer.transform.position).normalized;
-        transform.position = startPlayer.transform.position + moveDir * 0.5f;
+        this.target = target.transform;
+        Vector3 moveDir = (target.transform.position - owner.transform.position).normalized;
+        transform.position = owner.transform.position + moveDir * 0.5f;
         m_State = StarState.Flying;
+        owner = null;
+    }
+
+    public void VomitStar(Vector3 position)
+    {
+        if (m_State != StarState.InBody)
+        {
+            return;
+        }
+        m_State = StarState.Idle;
+        owner = null;
     }
 }

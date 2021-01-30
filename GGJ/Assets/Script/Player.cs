@@ -93,13 +93,12 @@ public class Player : MonoBehaviour
     {
         m_HaveStar = true;
         m_Star = star;
-        star.PlayerEatStar(this);
+        star.EatStar(gameObject);
     }
 
     //确认玩家可以失去这个星星后发生的事情
-    private void LoseStar(Star star)
+    private void LoseStar()
     {
-        star.PlayerVomitStar(this);
         m_HaveStar = false;
         m_Star = null;
     }
@@ -137,7 +136,7 @@ public class Player : MonoBehaviour
     }
 
     //吐星星事件触发，也就是星星离开人的时候触发
-    private void VomitStar()
+    private void VomitStar(bool rageVomit)
     {
         //TODO：吐星星事件人物属性处理
         if (!m_HaveStar)
@@ -145,8 +144,19 @@ public class Player : MonoBehaviour
             return;
         }
 
-        LoseStar(m_Star);
-
+        LoseStar();
+        if (!rageVomit)
+        {
+            m_Star.VomitStar(FindAnotherPlayer(this).gameObject);
+        }
+        else
+        {
+            Vector3 dir = Random.onUnitSphere;
+            dir.z = 0;
+            dir = dir.normalized;
+            dir.y = Mathf.Abs(dir.y);
+            m_Star.VomitStar(dir);
+        }
         //调用回调，LoseStar之后星星和对象的关系已经确定
         if (vomitStarEvents != null)
         {
@@ -172,7 +182,7 @@ public class Player : MonoBehaviour
         //TODO:变大， 无法控制
         transform.localScale = Vector3.one * playerData.amplification;
         //吐星星
-        VomitStar();
+        VomitStar(true);
     }
 
     //尝试停止狂暴
