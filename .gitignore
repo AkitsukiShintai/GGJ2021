@@ -30,7 +30,11 @@
 *.exe
 *.out
 *.app
+*.csproj
+*.sln
 
+# Folder
 Library
 Logs
 Temp
+.vs
