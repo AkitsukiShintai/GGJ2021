@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    public Star testStar;
     private List<Star> m_Stars;
 
     private float m_RageValue;
@@ -93,6 +94,11 @@ public class Player : MonoBehaviour
         else
         {
             TryRage();
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            VomitStar(false);
         }
     }
 
@@ -168,7 +174,7 @@ public class Player : MonoBehaviour
         //调用回调，LoseStar之后星星和对象的关系已经确定
         if (vomitStarEvents != null)
         {
-            vomitStarEvents.Invoke(this, m_Stars[0]);
+            vomitStarEvents.Invoke(this, star);
         }
     }
 
@@ -206,6 +212,15 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Star"))
+        {
+            EatStar(other.gameObject.GetComponent<Star>());
+            Debug.Log(gameObject.name + "吃星星拉~");
+        }
+    }
+
+    private void OnColliderEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Star"))
         {
