@@ -18,9 +18,9 @@ MonoBehaviour:
   moveSpeed: 1
   jump: 4
   amplification: 3
-  vision: 0
-  visionOverlap: 0
-  visionAmplification: 0
+  vision: 3
+  visionOverlap: 2
+  visionAmplification: 4
   jumpKey: 256
   fastKey: 259
   rangeAttackKey: 258

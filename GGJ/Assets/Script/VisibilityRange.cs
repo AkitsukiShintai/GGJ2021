@@ -10,6 +10,7 @@ public class VisibilityRange : MonoBehaviour
     // Start is called before the first frame update
     Player owningPlayer;
     public GameObject visionPrefab;
+    [HideInInspector]
     public Transform VisibililtyObj;
 
     private float m_VisibilityRadius;
