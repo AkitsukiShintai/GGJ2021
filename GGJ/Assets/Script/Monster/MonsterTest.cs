@@ -12,7 +12,7 @@ public class MonsterTest : MonoBehaviour
     void Update()
     {
         var monster = gameObject.GetComponent<Monster>();
-        monster.MoveTo(target, moveType);
+        monster.MoveToward(target, moveType);
         monster.AttackBy(attackType);
     }
 }

@@ -83,10 +83,10 @@ namespace Assets.Script.Monster
         }
 
 
-        public void MoveTo(Vector3 target, MonsterMoveType type)
+        public void MoveToward(Vector3 direction, MonsterMoveType type)
         {
             status.moveType = type;
-            status.moveDir = target;
+            status.moveDir = direction.normalized;
         }
 
 
