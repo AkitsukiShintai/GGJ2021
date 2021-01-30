@@ -102,25 +102,26 @@ public class PlayerMove : MonoBehaviour
     private void FixedUpdate()
     {
         if (m_IsDie) return;
-        if (isFast)
-        {
-            m_animator.SetFloat("MoveSpeed", 1);
-            transform.position += transform.forward * 20 * Time.deltaTime;
-            Vector3 pos = transform.position; pos.z = 0; transform.position = pos;
-            return;
-        }
-        if (isHit)
-        {
-            transform.position -= transform.forward * 20 * Time.deltaTime;
-            Vector3 pos = transform.position; pos.z = 0; transform.position = pos;
-            return;
-        }
+        //if (isFast)
+        //{
+        //    m_animator.SetFloat("MoveSpeed", 1);
+        //    transform.position += transform.forward * 20 * Time.deltaTime;
+        //    Vector3 pos = transform.position; pos.z = 0; transform.position = pos;
+        //    return;
+        //}
+        //if (isHit)
+        //{
+        //    transform.position -= transform.forward * 20 * Time.deltaTime;
+        //    Vector3 pos = transform.position; pos.z = 0; transform.position = pos;
+        //    return;
+        //}
         MoveUpdate();
     }
 
     private void Update()
     {
         if (m_IsDie) return;
+        m_animator.SetBool("Grounded", m_isGrounded);
         if (Input.GetKeyDown(playerData.jumpKey) && m_isGrounded)
         {
             m_rigidBody.AddForce(Vector3.up * playerData.jump, ForceMode.Impulse);
