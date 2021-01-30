@@ -60,6 +60,14 @@ public class Player : MonoBehaviour
 
     private float m_RageValue;
 
+    public float rageValue
+    {
+        get
+        {
+            return m_RageValue;
+        }
+    }
+
     private void Awake()
     {
         if (players == null)
@@ -76,7 +84,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        m_RageValue = playerData ? playerData.rage : 0;
+        m_RageValue = 0;
     }
 
     private void Update()
@@ -85,10 +93,10 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        if (m_Raging && m_Stars[0])
+        if (m_Raging && m_HaveStar)
         {
             //狂暴且有星星，降低狂暴值
-            m_RageValue = Mathf.Clamp(m_RageValue - Time.deltaTime * playerData.rageDescentRate, 0, playerData.rageMax);
+            m_RageValue = Mathf.Clamp(m_RageValue - Time.deltaTime * playerData.rageDescentRate, 0, playerData.rage);
             TryStopRaging();
         }
         else
@@ -189,8 +197,17 @@ public class Player : MonoBehaviour
 
     private void TryRage()
     {
-        if (!ShouldRage() || m_Raging)
+        if (!ShouldRage())
         {
+            return;
+        }
+
+        if (m_Raging)
+        {
+            if (m_RageValue >= playerData.rageMax)
+            {
+                GetComponent<PlayerMove>().Die();
+            }
             return;
         }
         //TODO:变大， 无法控制
