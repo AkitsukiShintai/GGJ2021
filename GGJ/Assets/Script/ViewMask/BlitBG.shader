@@ -1,8 +1,7 @@
-﻿Shader "Unlit/BlitShader"
+﻿Shader "Unlit/BlitBackground"
 {
     Properties
     {
-        //_MainTex ("Texture", 2D) = "white" {}
     }
     SubShader
     {
@@ -31,25 +30,23 @@
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _BackgroundRT;
-            sampler2D _ForgroundMask;
+            sampler2D _CameraColorTexture;
             CBUFFER_START(UnityPerMaterial)
-                float4 _ForgroundMask_ST;
+                float4 _CameraColorTexture_ST;
             CBUFFER_END
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = TransformObjectToHClip(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _ForgroundMask);
+                o.uv = TRANSFORM_TEX(v.uv, _CameraColorTexture);
                 return o;
             }
 
             half4 frag (v2f i) : SV_Target
             {
-                half4 col = tex2D(_ForgroundMask, i.uv);
-                half4 bg = tex2D(_BackgroundRT, i.uv);
-                return half4(bg.rgb * 0.3, 1.0 - col.r);
+                half4 col = tex2D(_CameraColorTexture, i.uv);
+                return col;
             }
             ENDHLSL
         }

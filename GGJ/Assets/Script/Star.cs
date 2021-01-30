@@ -72,6 +72,7 @@ public class Star : MonoBehaviour
         owner = player.gameObject;
         target = null;
         m_State = StarState.InBody;
+        gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -83,6 +84,7 @@ public class Star : MonoBehaviour
         {
             return;
         }
+        gameObject.SetActive(true);
         this.target = target.transform;
         Vector3 moveDir = (target.transform.position - owner.transform.position).normalized;
         transform.position = owner.transform.position + moveDir * 0.5f;
