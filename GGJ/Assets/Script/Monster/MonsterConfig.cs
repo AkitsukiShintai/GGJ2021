@@ -58,5 +58,14 @@ namespace Assets.Script
 
         [Tooltip("星星停留时间")]
         public float holdStarTime;
+
+        [Tooltip("起跳速度")]
+        public float jumpSpeed;
+
+        [Tooltip("起跳持续时间")]
+        public float jumpDuration;
+
+        [Tooltip("转身速度")]
+        public float turnDegPerSec;
     }
 }

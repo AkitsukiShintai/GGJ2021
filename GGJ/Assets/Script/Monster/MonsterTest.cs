@@ -13,6 +13,10 @@ public class MonsterTest : MonoBehaviour
     {
         var monster = gameObject.GetComponent<Monster>();
         monster.MoveToward(target, moveType);
+        if (target.y > 0f)
+        {
+            monster.Jump();
+        }
         monster.AttackBy(attackType);
     }
 }

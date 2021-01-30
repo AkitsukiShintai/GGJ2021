@@ -44,7 +44,7 @@ namespace Assets.Script.Monster
             status = new MonsterStatus(cfg.initRage);
             stars = new Queue<KeyValuePair<float, Star>>(2);
             animator = gameObject.GetComponent<Animator>();
-            monsterMove = new MonsterMove(transform, animator);
+            monsterMove = new MonsterMove(transform, animator, cfg);
             monsterAttack = new MonsterAttack(transform, animator, cfg);
         }
 
@@ -86,9 +86,23 @@ namespace Assets.Script.Monster
         public void MoveToward(Vector3 direction, MonsterMoveType type)
         {
             status.moveType = type;
-            status.moveDir = direction.normalized;
+            status.moveDir = new Vector3(direction.x, 0f, 0f).normalized;
         }
 
+
+        public void Jump()
+        {
+            var isGrounded = Physics.Raycast(transform.position + new Vector3(0f, 0.8f, 0f), Vector3.down, 0.9f);
+            if (isGrounded && !monsterMove.IsJumping)
+            {
+                monsterMove.StartJump();
+                StartCoroutine(Delay(() =>
+                {
+                    monsterMove.EndJump();
+                }, cfg.jumpDuration));
+            }
+        }
+    
 
         public void AttackBy(MonsterAttackType type)
         {
@@ -144,6 +158,15 @@ namespace Assets.Script.Monster
                 {
                     TryTouchAttack(playerObj.GetComponent<Player>());
                 }
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Star"))
+            {
+                EatStar(other.gameObject.GetComponent<Star>());
+                Debug.Log(gameObject.name + "吃星星拉~");
             }
         }
 
