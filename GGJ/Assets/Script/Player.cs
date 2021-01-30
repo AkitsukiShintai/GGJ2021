@@ -55,6 +55,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    private Star m_Star;
+
     private void Awake()
     {
         if (players == null)
@@ -74,13 +76,24 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (m_Raging && m_Star)
+        {
+            //狂暴且有星星，降低狂暴值
+            playerData.rage = Mathf.Clamp(playerData.rage - Time.deltaTime * playerData.rageDescentRate, 0, playerData.rageMax);
+            TryStopRaging();
+        }
+        else
+        {
+            TryRage();
+        }
     }
 
     //确认玩家可以得到这个星星后发生的事情
     private void GetStar(Star star)
     {
-        star.PlayerEatStar(this);
         m_HaveStar = true;
+        m_Star = star;
+        star.PlayerEatStar(this);
     }
 
     //确认玩家可以失去这个星星后发生的事情
@@ -88,6 +101,7 @@ public class Player : MonoBehaviour
     {
         star.PlayerVomitStar(this);
         m_HaveStar = false;
+        m_Star = null;
     }
 
     //吃星星事件触发，也就是当人碰到星星的时候触发
@@ -123,7 +137,7 @@ public class Player : MonoBehaviour
     }
 
     //吐星星事件触发，也就是星星离开人的时候触发
-    private void VomitStar(Star star)
+    private void VomitStar()
     {
         //TODO：吐星星事件人物属性处理
         if (!m_HaveStar)
@@ -131,12 +145,12 @@ public class Player : MonoBehaviour
             return;
         }
 
-        LoseStar(star);
+        LoseStar(m_Star);
 
         //调用回调，LoseStar之后星星和对象的关系已经确定
         if (vomitStarEvents != null)
         {
-            vomitStarEvents.Invoke(this, star);
+            vomitStarEvents.Invoke(this, m_Star);
         }
     }
 
@@ -149,7 +163,7 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    private void Rage()
+    private void TryRage()
     {
         if (!ShouldRage() || m_Raging)
         {
@@ -157,5 +171,19 @@ public class Player : MonoBehaviour
         }
         //TODO:变大， 无法控制
         transform.localScale = Vector3.one * playerData.amplification;
+        //吐星星
+        VomitStar();
+    }
+
+    //尝试停止狂暴
+    private void TryStopRaging()
+    {
+        if (playerData.rage == 0.0f && m_Raging && m_HaveStar)
+        {
+            //TODO:变回来
+            transform.localScale = Vector3.one;
+
+            m_Raging = false;
+        }
     }
 }
