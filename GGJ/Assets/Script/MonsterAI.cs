@@ -38,32 +38,33 @@ public class MonsterAI : MonoBehaviour
     void Percept()
     {
         monster.noBig = true;
+        monster.targetIndex = -1;
         float dist, minDist = float.MaxValue;
         for (int i = 0; i < players.Length; i++)
         {
             ref var p = ref players[i];
+            if (!p.IsAlive)
+                continue;
             if (p.IsBig)
-            {
                 monster.noBig = false;
-            }
             p.dist = (transform.position - p.Pos).magnitude;
-            if (p.IsAlive)
+            dist = p.dist * (p.IsBig ? 0.95f : 1);
+            if (dist < minDist)
             {
-                dist = p.dist * (p.IsBig ? 0.95f : 1);
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    monster.targetIndex = i;
-                }
+                minDist = dist;
+                monster.targetIndex = i;
             }
         }
     }
 
     void Think()
     {
+        action.moveType = MonsterMoveType.IDLE;
+        action.attackType = MonsterAttackType.IDLE;
+        if (monster.targetIndex == -1)
+            return;
         ref var cfg = ref m_Monster.cfg;
         ref var p = ref players[monster.targetIndex];
-        action.moveType = MonsterMoveType.IDLE;
         action.targetPos = p.Pos;
         if (monster.noBig
             && Time.time - monster.lastAreaAttackTime > cfg.areaAttackCoolDown
@@ -87,10 +88,7 @@ public class MonsterAI : MonoBehaviour
             monster.lastCommonAttackTime = Time.time;
         }
         else
-        {
-            action.attackType = MonsterAttackType.IDLE;
             action.moveType = MonsterMoveType.RUN;
-        }
     }
 
     void Act()
@@ -99,11 +97,8 @@ public class MonsterAI : MonoBehaviour
         var dir = action.targetPos - transform.position;
         bool jump = false;
         if (dir.y > size.y / 2)
-        {
             jump = true;
-        }
         else
-        {
             foreach (var stair in stairs)
             {
                 var v = stair.position - transform.position;
@@ -112,36 +107,33 @@ public class MonsterAI : MonoBehaviour
                     jump = false;
                     break;
                 }
-                float speed;
-                switch (action.moveType)
-                {
-                    case MonsterMoveType.IDLE:
-                        speed = 0;
-                        break;
-                    case MonsterMoveType.WALK:
-                        speed = cfg.walkSpeed;
-                        break;
-                    case MonsterMoveType.RUN:
-                        speed = cfg.runSpeed;
-                        break;
-                    default:
-                        throw new System.Exception();
-                };
-                if (Vector3.Dot(dir, v) > 0 && speed * cfg.jumpDuration > Mathf.Abs(v.x))// && v.y < size.y)
-                {
+                if (Vector3.Dot(dir, v) > 0 && MoveSpeed * cfg.jumpDuration > Mathf.Abs(v.x))
                     jump = true;
-                }
             }
-        }
         if (jump)
-        {
             m_Monster.Jump();
-        }
         dir.y = 0;
         m_Monster.MoveTowards(dir.normalized, action.moveType);
         if (m_Monster.status.attackType == MonsterAttackType.IDLE)
-        {
             m_Monster.AttackBy(action.attackType);
+    }
+
+    float MoveSpeed
+    {
+        get
+        {
+            ref var cfg = ref m_Monster.cfg;
+            switch (action.moveType)
+            {
+                case MonsterMoveType.IDLE:
+                    return 0;
+                case MonsterMoveType.WALK:
+                    return cfg.walkSpeed;
+                case MonsterMoveType.RUN:
+                    return cfg.runSpeed;
+                default:
+                    throw new System.Exception();
+            }
         }
     }
 }
