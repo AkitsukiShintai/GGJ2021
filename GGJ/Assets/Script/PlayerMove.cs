@@ -239,9 +239,12 @@ public class PlayerMove : MonoBehaviour
     {
         m_IsDie = true;
         m_animator.SetTrigger("Die");
+
         StartCoroutine(Delay(() =>
         {
             gameObject.SetActive(false);
+            GameObject newStar = Instantiate(GetComponent<Player>().testStar);
+            newStar.transform.position = transform.position + Vector3.up * 0.1f;
         }, 1f));
     }
 

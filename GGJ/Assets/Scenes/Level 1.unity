@@ -3399,11 +3399,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: zhujue_Left
       objectReference: {fileID: 0}
-    - target: {fileID: 3161505523171013413, guid: e300feae4ff8ac4438a1bae82a4e079d,
-        type: 3}
-      propertyPath: testStar
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 3194554038036297199, guid: e300feae4ff8ac4438a1bae82a4e079d,
         type: 3}
       propertyPath: m_LocalPosition.x

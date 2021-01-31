@@ -3,14 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Assets.Script.Monster
 {
-
     public enum MonsterAttackType { IDLE, COMMON, DASH, RANGE };
 
     public enum MonsterMoveType { IDLE, WALK, RUN };
-
 
     public class MonsterStatus
     {
@@ -24,13 +21,10 @@ namespace Assets.Script.Monster
             rage = initRage;
             moveDir = Vector3.left;
         }
-
-
     }
 
     public class Monster : MonoBehaviour
     {
-
         public MonsterConfig cfg;
         public MonsterStatus status;
         private Queue<KeyValuePair<float, Star>> stars;
@@ -39,7 +33,7 @@ namespace Assets.Script.Monster
         private MonsterAttack monsterAttack;
         private float lastTouchDmgTime = 0f;
 
-        void Awake()
+        private void Awake()
         {
             status = new MonsterStatus(cfg.initRage);
             stars = new Queue<KeyValuePair<float, Star>>(2);
@@ -48,17 +42,16 @@ namespace Assets.Script.Monster
             monsterAttack = new MonsterAttack(transform, animator, cfg);
         }
 
-        void Update()
+        private void Update()
         {
             if (CheckVomit()) VomitStar();  // 吐星星
             ChangeRage();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             monsterMove.Move(status.moveDir, GetSpeed());
         }
-
 
         public float GetSpeed()
         {
@@ -82,13 +75,11 @@ namespace Assets.Script.Monster
             return speed;
         }
 
-
         public void MoveTowards(Vector3 direction, MonsterMoveType type)
         {
             status.moveType = type;
             status.moveDir = new Vector3(direction.x, 0f, 0f).normalized;
         }
-
 
         public void Jump()
         {
@@ -102,7 +93,6 @@ namespace Assets.Script.Monster
                 }, cfg.jumpDuration));
             }
         }
-    
 
         public void AttackBy(MonsterAttackType type)
         {
@@ -123,7 +113,6 @@ namespace Assets.Script.Monster
             action();
         }
 
-
         private void OnCollisionStay(Collision collision)
         {
             var playerObj = collision.gameObject;
@@ -133,7 +122,7 @@ namespace Assets.Script.Monster
             }
         }
 
-        void TryTouchAttack(Player player)
+        private void TryTouchAttack(Player player)
         {
             float curTime = Time.time;
             if (curTime >= lastTouchDmgTime + cfg.commonAttackTime)
@@ -170,27 +159,26 @@ namespace Assets.Script.Monster
             }
         }
 
-        void EatStar(Star star)
+        private void EatStar(Star star)
         {
             star.EatStar(gameObject);
             // 记录time，等待吐出
             stars.Enqueue(new KeyValuePair<float, Star>(Time.time, star));
         }
 
-
-        void VomitStar()
+        private void VomitStar()
         {
             Vector3 pos = GetStarDropPos();
             var star = stars.Dequeue().Value;
             star.VomitStar(pos);  // 吐出星星，告诉星星往哪里飞
         }
 
-        Vector3 GetStarDropPos()
+        private Vector3 GetStarDropPos()
         {
             return gameObject.transform.position;
         }
 
-        bool CheckVomit()
+        private bool CheckVomit()
         {
             if (stars.Count > 0)
             {
@@ -200,8 +188,7 @@ namespace Assets.Script.Monster
             return false;
         }
 
-
-        void ChangeRage()
+        private void ChangeRage()
         {
             float rageRate = 0f;
             foreach (var timeAndStar in stars)
@@ -218,27 +205,24 @@ namespace Assets.Script.Monster
             return status.rage;
         }
 
-        bool CheckDeath()
+        private bool CheckDeath()
         {
             return status.rage < cfg.deadRage;
         }
 
-        void Dead()
+        private void Dead()
         {
             // 触发一个死亡事件
-            // 处理销毁、死亡动画等
+            gameObject.SetActive(true);
         }
 
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             var commonAttackRange = new Vector3(1f, 0.5f, 1f);
             var center = transform.position;
             center.y += commonAttackRange.y / 2f;
             Gizmos.DrawWireCube(center, commonAttackRange);
             Gizmos.DrawWireSphere(transform.position, cfg.areaAttackRange);
-
         }
-    
     }
-
 }

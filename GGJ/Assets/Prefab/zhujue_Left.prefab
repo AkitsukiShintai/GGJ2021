@@ -197,7 +197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 56209f848de282049b2603c02b5b8db4, type: 2}
-  testStar: {fileID: 0}
+  testStar: {fileID: 7408368508431125709, guid: 397980bbd151fa14da8d0e74588d2792,
+    type: 3}
 --- !u!114 &974290316292180879
 MonoBehaviour:
   m_ObjectHideFlags: 0

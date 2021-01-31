@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public Star testStar;
+    public GameObject testStar;
     private List<Star> m_Stars;
 
     private float m_RageValue;
