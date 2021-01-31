@@ -86,11 +86,11 @@ public class ShadowingMaskRenderPassFeature : ScriptableRendererFeature
         Material BlitMaterial;
         int forground;
 
-        public BlitMaskRenderPass()
+        public BlitMaskRenderPass(Material blitMask)
         {
             forground = Shader.PropertyToID("_ForgroundMask");
-            Shader blitShader = Shader.Find("Unlit/BlitShader");
-            BlitMaterial = new Material(blitShader);
+            //Shader blitShader = Shader.Find("Unlit/BlitShader");
+            BlitMaterial = new Material(blitMask);
         }
 
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
@@ -147,6 +147,14 @@ public class ShadowingMaskRenderPassFeature : ScriptableRendererFeature
         }
     }
 
+    [System.Serializable]
+    public class ShadowingMaskRenderPassFeatureSettings
+    {
+        public Material finalBlitMaterial;
+    }
+
+    public ShadowingMaskRenderPassFeatureSettings settings = new ShadowingMaskRenderPassFeatureSettings();
+
     //拷贝已经画的物体
     BlitCameraContent m_BlitContentPass;
     //画会被隐藏的物体
@@ -158,26 +166,33 @@ public class ShadowingMaskRenderPassFeature : ScriptableRendererFeature
 
     public override void Create()
     {
-        m_BlitContentPass = new BlitCameraContent();
-        m_DrawFullyOccludePass = new FullyOccludedRenderPass();
-        m_ScriptablePass = new ShadowingMaskRenderPass();
-        m_BlitPass = new BlitMaskRenderPass();
-        // Configures where the render pass should be injected.
-        m_BlitContentPass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
-        m_DrawFullyOccludePass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
-        m_ScriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
-        m_BlitPass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
+        if (settings.finalBlitMaterial != null)
+        {
+            m_BlitContentPass = new BlitCameraContent();
+            m_DrawFullyOccludePass = new FullyOccludedRenderPass();
+            m_ScriptablePass = new ShadowingMaskRenderPass();
+
+            m_BlitPass = new BlitMaskRenderPass(settings.finalBlitMaterial);
+            // Configures where the render pass should be injected.
+            m_BlitContentPass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
+            m_DrawFullyOccludePass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
+            m_ScriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
+            m_BlitPass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
+        }
     }
 
     // Here you can inject one or multiple render passes in the renderer.
     // This method is called when setting up the renderer once per-camera.
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        renderer.EnqueuePass(m_BlitContentPass);
-        renderer.EnqueuePass(m_DrawFullyOccludePass);
+        if (settings.finalBlitMaterial != null)
+        {
+            renderer.EnqueuePass(m_BlitContentPass);
+            renderer.EnqueuePass(m_DrawFullyOccludePass);
 
-        renderer.EnqueuePass(m_ScriptablePass);
-        renderer.EnqueuePass(m_BlitPass);
+            renderer.EnqueuePass(m_ScriptablePass);
+            renderer.EnqueuePass(m_BlitPass);
+        }
     }
 }
 

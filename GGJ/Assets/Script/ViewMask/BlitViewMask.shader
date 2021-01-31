@@ -2,6 +2,7 @@
 {
     Properties
     {
+        _Tint("Tint", Color) = (0.2, 0.2, 0.2, 0.2)
         //_MainTex ("Texture", 2D) = "white" {}
     }
     SubShader
@@ -35,6 +36,7 @@
             sampler2D _ForgroundMask;
             CBUFFER_START(UnityPerMaterial)
                 float4 _ForgroundMask_ST;
+                float4 _Tint;
             CBUFFER_END
 
             v2f vert (appdata v)
@@ -49,7 +51,7 @@
             {
                 half4 col = tex2D(_ForgroundMask, i.uv);
                 half4 bg = tex2D(_BackgroundRT, i.uv);
-                return half4(bg.rgb * 0.2, 1.0 - col.r);
+                return half4(bg.rgb * _Tint.rgb, 1.0 - col.r);
             }
             ENDHLSL
         }
