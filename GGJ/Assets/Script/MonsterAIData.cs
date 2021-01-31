@@ -13,9 +13,9 @@ namespace MonsterAIData
             dist = 0;
         }
 
-        public Vector3 pos => p.transform.position;
-        public bool isBig => p.transform.localScale.y > 1;
-        public bool isAlive => true;
+        public Vector3 Pos => p.transform.position;
+        public bool IsBig => p.transform.localScale.y > 1;
+        public bool IsAlive => p.rageValue < p.playerData.rageMax;
 
         public float dist;
     }
