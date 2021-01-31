@@ -9,6 +9,8 @@ public class PlayerUI : MonoBehaviour
     public UnityEngine.UI.Image rageImg;
     public UnityEngine.UI.Image normalImg;
     public UnityEngine.UI.Image starImg;
+    public Color NormalColor = new Color(1.0f, 1.0f, 1.0f, 0.8f);
+    public Color RageColor = new Color(1.0f, 0.0f, 0.0f, 0.8f);
 
     private void OnEnable()
     {
@@ -21,5 +23,6 @@ public class PlayerUI : MonoBehaviour
         starImg.gameObject.SetActive(player.haveStar);
         normalImg.gameObject.SetActive(player.gameObject.activeSelf);
         rageImg.fillAmount = player.rageValue / player.playerData.rageMax;
+        rageImg.color = Color.Lerp(NormalColor, RageColor, rageImg.fillAmount);
     }
 }
