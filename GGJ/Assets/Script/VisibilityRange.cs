@@ -32,7 +32,12 @@ public class VisibilityRange : MonoBehaviour
     }
     private void Update()
     {
-        if(owningPlayer == null) { return; }
+        if(owningPlayer == null || !owningPlayer.gameObject.activeSelf) 
+        {
+            VisibililtyObj.gameObject.SetActive(false);
+            return; 
+        }
+        VisibililtyObj.gameObject.SetActive(true);
         VisibililtyObj.position = transform.position;
         float distance = 1000.0f;
         var other = Player.FindAnotherPlayer(owningPlayer);
