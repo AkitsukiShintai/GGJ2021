@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37d60d0058459c4a9398bd64f11aa64, type: 3}
   m_Name: "\u4EBA\u7269\u5C5E\u6027Left 1"
   m_EditorClassIdentifier: 
-  rage: 0
+  rage: 10
   rageDescentRate: 1
-  rageMax: 10
+  rageMax: 100
   moveSpeed: 2
   jump: 4
   amplification: 3
