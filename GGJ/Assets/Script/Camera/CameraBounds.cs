@@ -16,6 +16,7 @@ public class CameraBounds : MonoBehaviour
 
     private void OnEnable()
     {
+        
         Inst = this;
         cam = GetComponent<Camera>();
     }
@@ -29,7 +30,11 @@ public class CameraBounds : MonoBehaviour
     }
     void Start()
     {
-        
+        if(Player.players != null)
+        {
+            player0 = Player.players[0];
+            player1 = Player.players[1];
+        }
     }
 
     // Update is called once per frame
