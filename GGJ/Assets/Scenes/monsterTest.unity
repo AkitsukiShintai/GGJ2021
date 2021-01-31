@@ -515,11 +515,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: zhujue_Left
       objectReference: {fileID: 0}
-    - target: {fileID: 2818837013782933333, guid: e300feae4ff8ac4438a1bae82a4e079d,
-        type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 3194554038036297199, guid: e300feae4ff8ac4438a1bae82a4e079d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -659,6 +654,11 @@ PrefabInstance:
     - target: {fileID: 3216857066966648471, guid: 82f2cd9987a5f65449b71c9bb826cc6d,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3216857066966648471, guid: 82f2cd9987a5f65449b71c9bb826cc6d,
+        type: 3}
+      propertyPath: target.y
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
