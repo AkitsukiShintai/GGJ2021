@@ -16,6 +16,7 @@ public class CameraBounds : MonoBehaviour
 
     private void OnEnable()
     {
+        
         Inst = this;
         cam = GetComponent<Camera>();
     }
@@ -29,7 +30,11 @@ public class CameraBounds : MonoBehaviour
     }
     void Start()
     {
-        
+        if(Player.players != null)
+        {
+            player0 = Player.players[0];
+            player1 = Player.players[1];
+        }
     }
 
     // Update is called once per frame
@@ -44,7 +49,7 @@ public class CameraBounds : MonoBehaviour
         Vector3 Targeting = p.transform.position;
         float interval = 0.0f;
         var otherP = Player.FindAnotherPlayer(p);
-        if (otherP != null || !otherP.gameObject.activeSelf)
+        if (otherP != null && !otherP.gameObject.activeSelf)
         {
             Targeting = (p.transform.position + otherP.transform.position) * 0.5f;
             interval = Mathf.Abs(p.transform.position.x - otherP.transform.position.x);

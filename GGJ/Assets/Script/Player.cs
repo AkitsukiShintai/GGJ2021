@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public static event ReviveCallback revivePlayerEvents = null;
 
     //获得两个玩家
-    private static Player[] players = null;
+    public static Player[] players = null;
 
     //查找另外一个玩家
     public static Player FindAnotherPlayer(Player onePlayer)
