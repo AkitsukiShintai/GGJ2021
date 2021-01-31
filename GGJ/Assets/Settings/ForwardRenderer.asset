@@ -51,4 +51,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    finalBlitMaterial: {fileID: 0}
+    finalBlitMaterial: {fileID: 2100000, guid: e9ec068d2b7208b4ba3c5d868f637cd6, type: 2}
