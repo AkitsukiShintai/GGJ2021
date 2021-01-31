@@ -15,12 +15,18 @@ MonoBehaviour:
   initRage: 200
   deadRage: 0
   commonAttackRange: 4
-  commonAttackSpeed: 0
-  dashAttackRange: 0
-  dashAttackMoveSpeed: 3
+  commonAttackSpeed: 4
+  commonAttackDmg: 10
+  dashAttackRange: 10
+  dashAttackMoveSpeed: 10
   dashAttackCoolDown: 2
+  dashAttackDmg: 20
   areaAttackRange: 10
   areaAttackCoolDown: 3
+  areaAttackDmg: 30
   walkSpeed: 1
   runSpeed: 5
   holdStarTime: 10
+  jumpSpeed: 10
+  jumpDuration: 0.3
+  turnDegPerSec: 240
