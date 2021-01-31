@@ -11,10 +11,10 @@ public class ShadowingMaskRenderPassFeature : ScriptableRendererFeature
         Material BlitMaterial;
         int blitRT;
 
-        public BlitCameraContent()
+        public BlitCameraContent(Shader blitShader)
         {
             blitRT = Shader.PropertyToID("_BackgroundRT");
-            Shader blitShader = Shader.Find("Unlit/BlitBackground");
+            //Shader blitShader = Shader.Find("Unlit/BlitBackground");
             BlitMaterial = new Material(blitShader);
         }
 
@@ -89,8 +89,7 @@ public class ShadowingMaskRenderPassFeature : ScriptableRendererFeature
         public BlitMaskRenderPass(Material blitMask)
         {
             forground = Shader.PropertyToID("_ForgroundMask");
-            //Shader blitShader = Shader.Find("Unlit/BlitShader");
-            BlitMaterial = new Material(blitMask);
+            BlitMaterial = blitMask;
         }
 
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
@@ -151,6 +150,7 @@ public class ShadowingMaskRenderPassFeature : ScriptableRendererFeature
     public class ShadowingMaskRenderPassFeatureSettings
     {
         public Material finalBlitMaterial;
+        public Shader bgBlitShader;
     }
 
     public ShadowingMaskRenderPassFeatureSettings settings = new ShadowingMaskRenderPassFeatureSettings();
@@ -166,9 +166,9 @@ public class ShadowingMaskRenderPassFeature : ScriptableRendererFeature
 
     public override void Create()
     {
-        if (settings.finalBlitMaterial != null)
+        if (settings.finalBlitMaterial != null && settings.bgBlitShader != null)
         {
-            m_BlitContentPass = new BlitCameraContent();
+            m_BlitContentPass = new BlitCameraContent(settings.bgBlitShader);
             m_DrawFullyOccludePass = new FullyOccludedRenderPass();
             m_ScriptablePass = new ShadowingMaskRenderPass();
 
@@ -185,7 +185,7 @@ public class ShadowingMaskRenderPassFeature : ScriptableRendererFeature
     // This method is called when setting up the renderer once per-camera.
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (settings.finalBlitMaterial != null)
+        if (settings.finalBlitMaterial != null && settings.bgBlitShader != null)
         {
             renderer.EnqueuePass(m_BlitContentPass);
             renderer.EnqueuePass(m_DrawFullyOccludePass);

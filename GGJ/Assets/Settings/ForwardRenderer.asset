@@ -52,3 +52,4 @@ MonoBehaviour:
   m_Active: 1
   settings:
     finalBlitMaterial: {fileID: 2100000, guid: e9ec068d2b7208b4ba3c5d868f637cd6, type: 2}
+    bgBlitShader: {fileID: 4800000, guid: 8b2ae69b813ca82429eed3109f6f159e, type: 3}
