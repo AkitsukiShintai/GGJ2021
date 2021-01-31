@@ -231,9 +231,9 @@ namespace Assets.Script.Monster
 
         void OnDrawGizmos()
         {
-            var commonAttackRange = new Vector3(1.6f, 1f, 1.6f);
+            var commonAttackRange = new Vector3(1f, 0.5f, 1f);
             var center = transform.position;
-            center.y += 0.5f;
+            center.y += commonAttackRange.y / 2f;
             Gizmos.DrawWireCube(center, commonAttackRange);
             Gizmos.DrawWireSphere(transform.position, cfg.areaAttackRange);
 

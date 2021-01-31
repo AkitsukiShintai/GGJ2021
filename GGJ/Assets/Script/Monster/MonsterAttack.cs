@@ -13,7 +13,7 @@ namespace Assets.Script.Monster
         {
             this.transform = transform;
             this.animator = animator;
-            commonAttackRange = new Vector3(0.8f, 0.5f, 0.8f);
+            commonAttackRange = new Vector3(0.5f, 0.25f, 0.5f);
             this.cfg = cfg;
         }
 
