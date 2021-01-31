@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1086244223172455226}
   - component: {fileID: 8841360072375891002}
-  - component: {fileID: 3950539480843628373}
+  - component: {fileID: 5947679238634384637}
   m_Layer: 0
   m_Name: DeadLine
   m_TagString: Untagged
@@ -40,12 +40,12 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1476458835569449444}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: -0.6, z: 0}
---- !u!114 &3950539480843628373
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5947679238634384637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1476458835569449444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 766865c9927283f46a475f09c713c31d, type: 3}
+  m_Script: {fileID: 11500000, guid: 74620d5b4a872114eaff93d7a7673ac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5671985459640960445
