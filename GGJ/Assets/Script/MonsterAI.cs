@@ -47,7 +47,7 @@ public class MonsterAI : MonoBehaviour
                 continue;
             if (p.IsBig)
                 monster.noBig = false;
-            p.dist = (transform.position - p.Pos).magnitude;
+            p.dist = Mathf.Abs((transform.position - p.Pos).x);
             dist = p.dist * (p.IsBig ? 0.95f : 1);
             if (dist < minDist)
             {
@@ -94,9 +94,9 @@ public class MonsterAI : MonoBehaviour
     void Act()
     {
         ref var cfg = ref m_Monster.cfg;
-        var dir = action.targetPos - transform.position;
+        var u = action.targetPos - transform.position;
         bool jump = false;
-        if (dir.y > size.y / 2)
+        if (u.y > size.y / 2 && JumpDist > Mathf.Abs(u.x))
             jump = true;
         else
             foreach (var stair in stairs)
@@ -107,18 +107,17 @@ public class MonsterAI : MonoBehaviour
                     jump = false;
                     break;
                 }
-                if (Vector3.Dot(dir, v) > 0 && MoveSpeed * cfg.jumpDuration > Mathf.Abs(v.x))
+                if (Vector3.Dot(u, v) > 0 && JumpDist > Mathf.Abs(v.x))
                     jump = true;
             }
         if (jump)
             m_Monster.Jump();
-        dir.y = 0;
-        m_Monster.MoveTowards(dir.normalized, action.moveType);
+        m_Monster.MoveTowards(u, action.moveType);
         if (m_Monster.status.attackType == MonsterAttackType.IDLE)
             m_Monster.AttackBy(action.attackType);
     }
 
-    float MoveSpeed
+    float JumpDist
     {
         get
         {
@@ -128,9 +127,9 @@ public class MonsterAI : MonoBehaviour
                 case MonsterMoveType.IDLE:
                     return 0;
                 case MonsterMoveType.WALK:
-                    return cfg.walkSpeed;
+                    return cfg.walkSpeed * cfg.jumpDuration;
                 case MonsterMoveType.RUN:
-                    return cfg.runSpeed;
+                    return cfg.runSpeed * cfg.jumpDuration;
                 default:
                     throw new System.Exception();
             }
