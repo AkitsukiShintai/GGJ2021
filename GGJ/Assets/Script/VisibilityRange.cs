@@ -32,9 +32,14 @@ public class VisibilityRange : MonoBehaviour
     }
     private void Update()
     {
+        if(owningPlayer == null) { return; }
         VisibililtyObj.position = transform.position;
+        float distance = 1000.0f;
         var other = Player.FindAnotherPlayer(owningPlayer);
-        float distance = Vector3.Distance(other.transform.position, transform.position);
+        if(other != null && other.gameObject.activeSelf)
+        {
+            distance = Vector3.Distance(other.transform.position, transform.position);
+        }
         if (distance > owningPlayer.playerData.visionOverlap)
         {
             visibilityRadius = Mathf.Lerp(visibilityRadius, owningPlayer.playerData.vision, 0.3f);

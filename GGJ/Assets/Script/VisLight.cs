@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
-public class VisLight : MonoBehaviour
+public class VisLight : BasicToggle
 {
     public LightData data;
 
@@ -12,6 +12,12 @@ public class VisLight : MonoBehaviour
     private float currentTime = 0.0f;
 
     private Transform childrenTrans;
+
+    public override void OnToggle()
+    {
+        gameObject.SetActive(true);
+    }
+
     private void Reset()
     {
         owningLight = GetComponent<Light>();

@@ -36,15 +36,15 @@ public class CameraBounds : MonoBehaviour
     void Update()
     {
         Player p = player0;
-        if(p == null)
+        if(p == null || !p.gameObject.activeSelf)
         {
             p = player1;
         }
-        if (p == null) return;
+        if (p == null || !p.gameObject.activeSelf) return;
         Vector3 Targeting = p.transform.position;
         float interval = 0.0f;
         var otherP = Player.FindAnotherPlayer(p);
-        if (otherP != null)
+        if (otherP != null || !otherP.gameObject.activeSelf)
         {
             Targeting = (p.transform.position + otherP.transform.position) * 0.5f;
             interval = Mathf.Abs(p.transform.position.x - otherP.transform.position.x);
