@@ -20,16 +20,20 @@ public class PlayerMove : MonoBehaviour
 
     private float m_currentH = 0;
     private Vector3 m_currentDirection = Vector3.zero;
+
     /// <summary>
     /// 插值
     /// </summary>
     private readonly float m_interpolation = 10;
+
     private bool m_isGrounded;
     private bool m_IsDie;
+
     /// <summary>
     /// 突进
     /// </summary>
     private bool isFast = false;
+
     private bool isHit = false;
     private List<Collider> m_collisions = new List<Collider>();
     public float jumpForce;
@@ -46,11 +50,13 @@ public class PlayerMove : MonoBehaviour
         Player.eatStarEvents += Player_eatStarEvents;
         Player.vomitStarEvents += Player_vomitStarEvents;
     }
+
     private void OnDestroy()
     {
         Player.eatStarEvents -= Player_eatStarEvents;
         Player.vomitStarEvents -= Player_vomitStarEvents;
     }
+
     /// <summary>
     /// 吐星星
     /// </summary>
@@ -79,6 +85,7 @@ public class PlayerMove : MonoBehaviour
         }
         star.VomitStar(target);
     }
+
     /// <summary>
     /// 吃星星
     /// </summary>
@@ -89,6 +96,7 @@ public class PlayerMove : MonoBehaviour
         if (player != gameObject.GetComponent<Player>()) return;
         SetScale((int)playerData.amplification);
     }
+
     /// <summary>
     /// 设置人物变大缩小
     /// </summary>
@@ -181,14 +189,17 @@ public class PlayerMove : MonoBehaviour
             case PlayerType.Left:
                 h = Input.GetAxis("LeftHorizontal");
                 break;
+
             case PlayerType.Right:
                 h = Input.GetAxis("RightHorizontal");
                 break;
+
             default:
                 break;
         }
         Move(h);
     }
+
     private void Update()
     {
         if (m_IsDie) return;
@@ -203,6 +214,7 @@ public class PlayerMove : MonoBehaviour
             Revive();
         }
     }
+
     public void Move(float h)
     {
         m_currentH = Mathf.Lerp(m_currentH, h, Time.deltaTime * m_interpolation);
@@ -222,6 +234,7 @@ public class PlayerMove : MonoBehaviour
             m_animator.SetFloat("MoveSpeed", direction.magnitude);
         }
     }
+
     public void Die()
     {
         m_IsDie = true;
@@ -231,6 +244,7 @@ public class PlayerMove : MonoBehaviour
             gameObject.SetActive(false);
         }, 1f));
     }
+
     /// <summary>
     /// 复活
     /// </summary>
@@ -239,6 +253,7 @@ public class PlayerMove : MonoBehaviour
         m_IsDie = false;
         gameObject.SetActive(true);
     }
+
     /// <summary>
     /// 突进
     /// </summary>
@@ -267,5 +282,10 @@ public class PlayerMove : MonoBehaviour
     {
         yield return new WaitForSeconds(delaySeconds);
         action();
+
+        if (Player.players[0].gameObject.activeSelf == false && Player.players[1].gameObject.activeSelf == false)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Level 1");
+        }
     }
 }

@@ -44,10 +44,42 @@ public class SceneSwitch : MonoBehaviour
         }
     }
 
+    public void OnClick()
+    {
+        Player.players = null;
+        switch (nextScene)
+        {
+            case SceneName.Level1:
+                SceneManager.LoadScene("Level 1");
+                break;
+
+            case SceneName.Level2:
+                SceneManager.LoadScene("Level 2");
+                break;
+
+            case SceneName.Level3:
+                SceneManager.LoadScene("Level 3");
+                break;
+
+            case SceneName.Level4:
+                SceneManager.LoadScene("Level 4");
+                break;
+
+            case SceneName.Main:
+                SceneManager.LoadScene("MainScene");
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            Player.players = null;
             switch (nextScene)
             {
                 case SceneName.Level1:
@@ -67,6 +99,8 @@ public class SceneSwitch : MonoBehaviour
                     break;
 
                 case SceneName.Main:
+                    SceneManager.LoadScene("MainScene");
+
                     break;
 
                 default:

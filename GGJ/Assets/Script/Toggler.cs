@@ -14,4 +14,12 @@ public class Toggler : MonoBehaviour
             basicToggle?.OnToggle();
         }
     }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            basicToggle?.OnToggle();
+        }
+    }
 }
