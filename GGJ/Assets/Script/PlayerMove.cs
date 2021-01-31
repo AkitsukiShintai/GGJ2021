@@ -198,6 +198,10 @@ public class PlayerMove : MonoBehaviour
             m_rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             m_animator.SetTrigger("Jump");
         }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Revive();
+        }
     }
     public void Move(float h)
     {
@@ -222,6 +226,18 @@ public class PlayerMove : MonoBehaviour
     {
         m_IsDie = true;
         m_animator.SetTrigger("Die");
+        StartCoroutine(Delay(() =>
+        {
+            gameObject.SetActive(false);
+        }, 1f));
+    }
+    /// <summary>
+    /// 复活
+    /// </summary>
+    public void Revive()
+    {
+        m_IsDie = false;
+        gameObject.SetActive(true);
     }
     /// <summary>
     /// 突进
@@ -247,9 +263,9 @@ public class PlayerMove : MonoBehaviour
     //        isHit = false;
     //    }, 0.05f));
     //}
-    //private IEnumerator Delay(Action action, float delaySeconds)
-    //{
-    //    yield return new WaitForSeconds(delaySeconds);
-    //    action();
-    //}
+    private IEnumerator Delay(Action action, float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        action();
+    }
 }

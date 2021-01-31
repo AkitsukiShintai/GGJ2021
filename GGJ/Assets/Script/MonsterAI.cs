@@ -42,14 +42,14 @@ public class MonsterAI : MonoBehaviour
         for (int i = 0; i < players.Length; i++)
         {
             ref var p = ref players[i];
-            if (p.isBig)
+            if (p.IsBig)
             {
                 monster.noBig = false;
             }
-            p.dist = (transform.position - p.pos).magnitude;
-            if (p.isAlive)
+            p.dist = (transform.position - p.Pos).magnitude;
+            if (p.IsAlive)
             {
-                dist = p.dist * (p.isBig ? 0.95f : 1);
+                dist = p.dist * (p.IsBig ? 0.95f : 1);
                 if (dist < minDist)
                 {
                     minDist = dist;
@@ -64,7 +64,7 @@ public class MonsterAI : MonoBehaviour
         ref var cfg = ref m_Monster.cfg;
         ref var p = ref players[monster.targetIndex];
         action.moveType = MonsterMoveType.IDLE;
-        action.targetPos = p.pos;
+        action.targetPos = p.Pos;
         if (monster.noBig
             && Time.time - monster.lastAreaAttackTime > cfg.areaAttackCoolDown
             && p.dist < cfg.areaAttackRange)
@@ -73,7 +73,7 @@ public class MonsterAI : MonoBehaviour
             monster.lastAreaAttackTime = Time.time;
             action.moveType = MonsterMoveType.WALK;
         }
-        else if (p.isBig
+        else if (p.IsBig
             && Time.time - monster.lastDashAttackTime >= cfg.dashAttackCoolDown
             && p.dist < cfg.dashAttackRange)
         {
